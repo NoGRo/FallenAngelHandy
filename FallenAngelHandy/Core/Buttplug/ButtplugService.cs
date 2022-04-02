@@ -202,9 +202,6 @@ namespace FallenAngelHandy
 
         public static async Task InsertCmd(List<CmdLinear> cmds)
         {
-            if (cmds.Any() && cmds.First().Value != GetCurrentValue() || cmds.Last().Value != GetCurrentValue())
-                throw new Exception("in order to insert commands in the current Queue first and last value must be the same as the current value");
-
             var passes = DateTime.Now - LastCommandSent.Sent.Value;
             LastCommandSent.Millis -= passes.Milliseconds;
 

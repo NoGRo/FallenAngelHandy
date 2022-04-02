@@ -40,17 +40,14 @@ namespace FallenAngelHandy
                         GalleryPlayer.Play(gallery);
                         OnStatusChange($"Gallery {gallery}");
                     }
-                    else if (Player.Mode == PlayerModeEnum.Gallery) //stop -> Filler
+                    else if (Mode == PlayerModeEnum.Gallery) //stop -> Filler
                     {
                         Mode = PlayerModeEnum.Filler;
                         GalleryPlayer.Stop();
                         FillerPlayer.Play();
                         OnStatusChange("Filler");
                     }
-
                     break;
-
-
                 case "Pause":
                     ButtplugService.Pause();
                     break;
