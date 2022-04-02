@@ -16,6 +16,6 @@ namespace FallenAngelHandy.Core.Configuration
         public int MinDamage { get; set; } = 20;
         public int CriticalDamage { get; set; } =  85;
         
-public int Delay { get; set; } = 1000;
+        public int Delay { get; set; } = 1000;
     }
 }

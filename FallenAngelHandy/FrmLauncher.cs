@@ -15,43 +15,14 @@ namespace FallenAngelHandy
 {
     public partial class FrmLauncher : Form
     {
-        Timer timerGallery = new Timer(14000);
-        Timer timerGalleryKeys = new Timer(1000);
+
         List<string> keys = new List<string>();
         GameSimulation gameSimulation = new GameSimulation();
 
         public FrmLauncher()
         {
-            timerGallery.Elapsed += TimerGallery_Elapsed;
-            timerGalleryKeys.Elapsed += TimerGalleryActive_Elapsed;
  
             InitializeComponent();
-        }
-
-        private void TimerGalleryActive_Elapsed(object sender, ElapsedEventArgs e)
-        {
-            if (!keys.Any())
-                return;
-
-            SendKeys.SendWait(keys.First());
-            keys.RemoveAt(0);
-        }
-
-        private void TimerGallery_Elapsed(object sender, ElapsedEventArgs e)
-        {
-            keys =  new List<string> { "x","s","a","a" };
-        }
-
-        private void button1_Click(object sender, EventArgs e)
-        {
-            FillerPlayer.Play();
-        }
-
-        
-        private void button7_Click(object sender, EventArgs e)
-        {
-            Launcher.Config.ButtplugUrl =  txtButtplugUrl.Text;
-            ButtplugService.init();
         }
 
         private void Launcher_Load(object sender, EventArgs e)
@@ -80,7 +51,6 @@ namespace FallenAngelHandy
             }));
         }
 
-
         private void Player_StatusChange(object sender, string e)
         {
             Invoke(new MethodInvoker(() =>
@@ -93,13 +63,6 @@ namespace FallenAngelHandy
         {
             gameSimulation.Show();
         }
-
-        private void button1_Click_1(object sender, EventArgs e)
-        {
-            timerGallery.Start();
-            timerGalleryKeys.Start();
-        }
-
 
         private void chkAttack_CheckedChanged(object sender, EventArgs e) 
             => Launcher.Config.Attacks = chkAttack.Checked;

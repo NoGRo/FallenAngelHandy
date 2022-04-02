@@ -33,19 +33,6 @@ namespace FallenAngelHandy
         public bool SexScenes { get; set; } = true;
         public bool SexScenesTimeSkip { get; set; } = true;
         public bool Filler { get; set; } = true;
-        
-        
-        public static void Save()
-        {
-            var configuration = new Configuration();
-            var json =  JsonSerializer.Serialize(configuration);
-            File.WriteAllText("config.json",json);
-        }
-
-        public static void Init()
-        {
-            Launcher.Config = JsonSerializer.Deserialize<Configuration>("config.json");
-        }
     }
 }
 

@@ -43,7 +43,6 @@ namespace FallenAngelHandy
             this.chkAttack = new System.Windows.Forms.CheckBox();
             this.btnLaunch = new System.Windows.Forms.Button();
             this.btnSimulate = new System.Windows.Forms.Button();
-            this.button1 = new System.Windows.Forms.Button();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.txtLog = new System.Windows.Forms.RichTextBox();
             this.grpConnection.SuspendLayout();
@@ -111,7 +110,6 @@ namespace FallenAngelHandy
             this.btnConnect.TabIndex = 9;
             this.btnConnect.Text = "Connect";
             this.btnConnect.UseVisualStyleBackColor = true;
-            this.btnConnect.Click += new System.EventHandler(this.button7_Click);
             // 
             // groupBox3
             // 
@@ -196,17 +194,6 @@ namespace FallenAngelHandy
             this.btnSimulate.UseVisualStyleBackColor = true;
             this.btnSimulate.Click += new System.EventHandler(this.btnSimulate_Click);
             // 
-            // button1
-            // 
-            this.button1.Location = new System.Drawing.Point(470, 205);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(112, 34);
-            this.button1.TabIndex = 9;
-            this.button1.Text = "button1";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Visible = false;
-            this.button1.Click += new System.EventHandler(this.button1_Click_1);
-            // 
             // pictureBox1
             // 
             this.pictureBox1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
@@ -221,9 +208,9 @@ namespace FallenAngelHandy
             // 
             // txtLog
             // 
-            this.txtLog.Location = new System.Drawing.Point(12, 246);
+            this.txtLog.Location = new System.Drawing.Point(8, 246);
             this.txtLog.Name = "txtLog";
-            this.txtLog.Size = new System.Drawing.Size(873, 537);
+            this.txtLog.Size = new System.Drawing.Size(926, 319);
             this.txtLog.TabIndex = 14;
             this.txtLog.Text = "";
             this.txtLog.DoubleClick += new System.EventHandler(this.txtLog_DoubleClick);
@@ -232,10 +219,9 @@ namespace FallenAngelHandy
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 25F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(893, 244);
+            this.ClientSize = new System.Drawing.Size(946, 243);
             this.Controls.Add(this.txtLog);
             this.Controls.Add(this.pictureBox1);
-            this.Controls.Add(this.button1);
             this.Controls.Add(this.btnSimulate);
             this.Controls.Add(this.btnLaunch);
             this.Controls.Add(this.groupBox3);
@@ -267,7 +253,6 @@ namespace FallenAngelHandy
         private System.Windows.Forms.CheckBox chkFiller;
         private System.Windows.Forms.Button btnLaunch;
         private System.Windows.Forms.Button btnSimulate;
-        private System.Windows.Forms.Button button1;
         private System.Windows.Forms.PictureBox pictureBox1;
         private System.Windows.Forms.Label lblGameStatus;
         private System.Windows.Forms.RichTextBox txtLog;
