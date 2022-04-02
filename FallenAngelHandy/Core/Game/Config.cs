@@ -4,13 +4,15 @@ using System.Text;
 using System.Text.Json;
 using System.IO;
 using System.Windows.Forms;
+using System.Diagnostics;
 
 namespace FallenAngelHandy
 {
     public class Config
     {
         public string ButtplugUrl { get; set; } = "ws://localhost:12345/buttplug";
-
+        public string ExePath { get; set; } = "Fallen Angel Marielle.exe";
+            
         public int MinSpeed { get; set; } = 50;
         public int MaxSpeed { get; set; } = 100;
         public int MinLength { get; set; } = 70;
@@ -33,6 +35,7 @@ namespace FallenAngelHandy
         public bool SexScenes { get; set; } = true;
         public bool SexScenesTimeSkip { get; set; } = true;
         public bool Filler { get; set; } = true;
+        
     }
 }
 

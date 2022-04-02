@@ -30,8 +30,6 @@ namespace FallenAngelHandy
                 var context = await listener.GetContextAsync();
                 var request = context.Request;
                 var response = context.Response;
-
-
                 
                 parseEvent(request);
                 response.ContentLength64 = 0;

@@ -81,7 +81,7 @@ namespace FallenAngelHandy
 
         private void btnLaunch_Click(object sender, EventArgs e)
         {
-            Process.Start("Fallen Angel Marielle.exe");
+            Process.Start(Game.Config.ExePath);
         }
 
         private void btnConnect_Click(object sender, EventArgs e)

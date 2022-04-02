@@ -9,7 +9,6 @@ namespace FallenAngelHandy
     public class ScriptBuilder
     {
 
-        #region Add Commands and manipulate Current Sequence
         private  List<CmdLinear> Sequence { get; set; } = new List<CmdLinear>();
 
         public List<CmdLinear> Generate()
@@ -68,9 +67,5 @@ namespace FallenAngelHandy
 
             Sequence = final.Where(x => x.Millis > 0).ToList();
         }
-
-        #endregion
-
-        
     }
 }

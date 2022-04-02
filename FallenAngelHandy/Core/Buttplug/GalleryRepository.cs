@@ -13,7 +13,6 @@ namespace FallenAngelHandy
     public static class GalleryRepository
     {
         
-        
         private static Dictionary<string, IEnumerable<(uint, byte)>> dicGallery = new Dictionary<string, IEnumerable<(uint, byte)>>();
 
         public static void Init()
@@ -55,7 +54,6 @@ namespace FallenAngelHandy
             var gallery = dicGallery.GetValueOrDefault(name)?.ToCmdLinear();
 
             return gallery;
-
         }
 
         public static List<CmdLinear> GetRandom()
