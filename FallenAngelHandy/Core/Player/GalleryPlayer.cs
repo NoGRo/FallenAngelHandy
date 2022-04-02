@@ -9,14 +9,9 @@ namespace FallenAngelHandy
     {
         private static string currentGallery;
         private static List<CmdLinear> gallery;
-        public static void Init()
-        {
-            GalleryRepository.Init();
-        }
         public static void Play(string galleryName)
         {
-            if (!ButtplugService.isReady 
-                || !Launcher.Config.SexScenes 
+            if (!Game.Config.SexScenes 
                 || currentGallery == galleryName)
                 return;
 
@@ -33,11 +28,7 @@ namespace FallenAngelHandy
         }
         public static void RePlay()
         {
-            if (!ButtplugService.isReady || !Launcher.Config.SexScenes)
-                return;
-
             ButtplugService.SendCmd(gallery);
-
         }
 
         internal static void Stop()

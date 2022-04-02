@@ -15,9 +15,9 @@ namespace FallenAngelHandy
         public static ButtplugClient client { get; set; }
         public static ButtplugClientDevice device { get; set; }
 
-        public static bool Invert { get; set; }
+        #region Device And Connection
 
-        private static Timer timerCmdEnd = new Timer();
+
 
         public static async Task init()
         {
@@ -59,7 +59,7 @@ namespace FallenAngelHandy
 
             try {
             
-                await client.ConnectAsync(new ButtplugWebsocketConnectorOptions(new Uri(Launcher.Config.ButtplugUrl)));
+                await client.ConnectAsync(new ButtplugWebsocketConnectorOptions(new Uri(Game.Config.ButtplugUrl)));
             }
             catch (ButtplugConnectorException ex)
             {
@@ -122,9 +122,41 @@ namespace FallenAngelHandy
         public static bool isReady
             => client != null && client.Connected && device != null;
 
+
+        #region eventos
+        private static void Client_ServerDisconnect(object sender, EventArgs e)
+        {
+            RemoveDevice(device);
+            timerReconnect.Enabled = true;
+        }
+        private static void Client_DeviceRemoved(object sender, DeviceRemovedEventArgs e)
+        {
+            RemoveDevice(e.Device);
+        }
+        private static void Client_ErrorReceived(object sender, ButtplugExceptionEventArgs e)
+        {
+            RemoveDevice(device);
+        }
+        private static void Client_ScanningFinished(object sender, EventArgs e)
+        {
+            if (device == null)
+                OnStatusChange($"Scanning Finished, no Device Found");
+        }
+        private static void Client_DeviceAdded(object sender, DeviceAddedEventArgs e)
+        {
+            AddDevice(e.Device);
+        }
+        #endregion
+
+        #endregion
+
+
+
+        public static bool Invert { get; set; }
+        private static Timer timerCmdEnd = new Timer();
+
         private static List<CmdLinear> queue { get; set; } = new List<CmdLinear>();
         private static CmdLinear LastCommandSent { get; set; }
-
 
         public static byte GetCurrentValue()
         {
@@ -154,40 +186,19 @@ namespace FallenAngelHandy
             if (!queue.Any())
                 return;
 
-            SendCmd(queue.First());
+            await SendCmd(queue.First());
             queue.RemoveAt(0);
         }
 
-        public static async Task Pause()
-        {
-            Stop();
-
-        }
+        public static async Task Pause() 
+            => Stop();
 
 
-        private static void OnCommandEnd(object sender, ElapsedEventArgs e)
-        {
-            timerCmdEnd.Stop();
-            if (queue.Any()) 
-            {
-                var cmd = queue.First();
-                queue.RemoveAt(0);
-                SendCmd(cmd);
-                
-            }
-            else 
-            {
-                QueueEnd?.Invoke(null, LastCommandSent);
-            }
-
-           // CommandEnd?.Invoke(null, LastCommandSent);
-        }
         public static async Task SendCmd(List<CmdLinear> cmds)
         {
             queue = cmds.ToList();
             await Resume();
         }
-
 
         public static async Task InsertCmd(List<CmdLinear> cmds)
         {
@@ -200,9 +211,8 @@ namespace FallenAngelHandy
             cmds.Add(LastCommandSent);
             queue.InsertRange(0, cmds);
 
-            SendCmd(queue.First());
+           await SendCmd(queue.First());
             queue.RemoveAt(0);
-
 
         }
         private static Task sendtask;
@@ -233,9 +243,24 @@ namespace FallenAngelHandy
             timerCmdEnd.Stop();
             timerCmdEnd.Interval = cmd.Millis < pases ? 1 : cmd.Millis - pases;
             timerCmdEnd.Start();
-            //await sendtask;
+            await sendtask;
+        }
+        private static void OnCommandEnd(object sender, ElapsedEventArgs e)
+        {
+            timerCmdEnd.Stop();
+            if (queue.Any()) 
+            {
+                var cmd = queue.First();
+                queue.RemoveAt(0);
+                SendCmd(cmd);
+                
+            }
+            else 
+            {
+                QueueEnd?.Invoke(null, LastCommandSent);
+            }
 
-
+           // CommandEnd?.Invoke(null, LastCommandSent);
         }
 
         public static async Task Stop()
@@ -245,30 +270,7 @@ namespace FallenAngelHandy
             await device.SendStopDeviceCmd();
         }
 
-        #region eventos
-        private static void Client_ServerDisconnect(object sender, EventArgs e)
-        {
-            RemoveDevice(device);
-            timerReconnect.Enabled = true;
-        }
-        private static void Client_DeviceRemoved(object sender, DeviceRemovedEventArgs e)
-        {
-            RemoveDevice(e.Device);
-        }
-        private static void Client_ErrorReceived(object sender, ButtplugExceptionEventArgs e)
-        {
-            RemoveDevice(device);
-        }
-        private static void Client_ScanningFinished(object sender, EventArgs e)
-        {
-            if (device == null)
-                OnStatusChange($"Scanning Finished, no Device Found");
-        }
-        private static void Client_DeviceAdded(object sender, DeviceAddedEventArgs e)
-        {
-            AddDevice(e.Device);
-        }
-        #endregion
+
 
     }
 }

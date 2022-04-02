@@ -1,7 +1,7 @@
 ﻿
 namespace FallenAngelHandy
 {
-    partial class FrmLauncher
+    partial class FrmGame
     {
         /// <summary>
         ///  Required designer variable.
@@ -29,7 +29,7 @@ namespace FallenAngelHandy
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FrmLauncher));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FrmGame));
             this.lblUrl = new System.Windows.Forms.Label();
             this.txtButtplugUrl = new System.Windows.Forms.TextBox();
             this.cmbFiller = new System.Windows.Forms.ComboBox();
@@ -110,6 +110,7 @@ namespace FallenAngelHandy
             this.btnConnect.TabIndex = 9;
             this.btnConnect.Text = "Connect";
             this.btnConnect.UseVisualStyleBackColor = true;
+            this.btnConnect.Click += new System.EventHandler(this.btnConnect_Click);
             // 
             // groupBox3
             // 
@@ -215,7 +216,7 @@ namespace FallenAngelHandy
             this.txtLog.Text = "";
             this.txtLog.DoubleClick += new System.EventHandler(this.txtLog_DoubleClick);
             // 
-            // FrmLauncher
+            // FrmGame
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 25F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -227,9 +228,9 @@ namespace FallenAngelHandy
             this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.grpConnection);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
-            this.Name = "FrmLauncher";
-            this.Text = "Fallen Angel Buttplug Launcher";
-            this.Load += new System.EventHandler(this.Launcher_Load);
+            this.Name = "FrmGame";
+            this.Text = "Fallen Angel Buttplug Game";
+            this.Load += new System.EventHandler(this.Game_Load);
             this.grpConnection.ResumeLayout(false);
             this.grpConnection.PerformLayout();
             this.groupBox3.ResumeLayout(false);

@@ -13,22 +13,23 @@ using System.Timers;
 using Timer = System.Timers.Timer;
 namespace FallenAngelHandy
 {
-    public partial class FrmLauncher : Form
+    public partial class FrmGame : Form
     {
 
         List<string> keys = new List<string>();
         GameSimulation gameSimulation = new GameSimulation();
 
-        public FrmLauncher()
+        public FrmGame()
         {
  
             InitializeComponent();
         }
 
-        private void Launcher_Load(object sender, EventArgs e)
+        private void Game_Load(object sender, EventArgs e)
         {
             ButtplugService.init();
             GameListener.Init();
+            GalleryRepository.Init();
             GameListener.GameEventArrive += GameListener_GameEventArrive;
             ButtplugService.StatusChange += ButtplugService_StatusChange;
             Player.StatusChange += Player_StatusChange;
@@ -65,13 +66,13 @@ namespace FallenAngelHandy
         }
 
         private void chkAttack_CheckedChanged(object sender, EventArgs e) 
-            => Launcher.Config.Attacks = chkAttack.Checked;
+            => Game.Config.Attacks = chkAttack.Checked;
 
         private void chkSexScenes_CheckedChanged(object sender, EventArgs e) 
-            => Launcher.Config.SexScenes = chkSexScenes.Checked;
+            => Game.Config.SexScenes = chkSexScenes.Checked;
 
         private void chkFiller_CheckedChanged(object sender, EventArgs e) 
-            => Launcher.Config.Filler = chkFiller.Checked;
+            => Game.Config.Filler = chkFiller.Checked;
 
         private void txtLog_DoubleClick(object sender, EventArgs e)
         {
@@ -81,6 +82,11 @@ namespace FallenAngelHandy
         private void btnLaunch_Click(object sender, EventArgs e)
         {
             Process.Start("Fallen Angel Marielle.exe");
+        }
+
+        private void btnConnect_Click(object sender, EventArgs e)
+        {
+            ButtplugService.Connect();
         }
     }
 }

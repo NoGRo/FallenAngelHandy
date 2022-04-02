@@ -7,7 +7,7 @@ using System.Windows.Forms;
 
 namespace FallenAngelHandy
 {
-    public class Configuration
+    public class Config
     {
         public string ButtplugUrl { get; set; } = "ws://localhost:12345/buttplug";
 

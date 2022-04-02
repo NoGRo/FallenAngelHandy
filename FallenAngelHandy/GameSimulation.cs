@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Specialized;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -60,8 +61,11 @@ namespace FallenAngelHandy
 
         private void btnHit_Click(object sender, EventArgs e)
         {
-
-            Player.GameEventHandler("Attack " + new Random().Next(2, 16));
+            
+            Player.GameEventHandler("hit_pain", new NameValueCollection
+            {
+                { "strength", new Random().Next(2, 16).ToString() }
+            });
         }
 
         private void btnPlayPause_Click(object sender, EventArgs e)
@@ -72,7 +76,10 @@ namespace FallenAngelHandy
                 var gallerys = GalleryRepository.GetNames();
                 gallery = gallerys[new Random().Next(0, gallerys.Count)];
             }
-            Player.GameEventHandler("GalleryPlay " + gallery);    
+            Player.GameEventHandler("gallery", new NameValueCollection
+            {
+                { "code",gallery }
+            });    
         }
 
         private void GameSimulation_Load(object sender, EventArgs e)

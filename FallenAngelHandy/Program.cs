@@ -27,14 +27,14 @@ namespace FallenAngelHandy
                     .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
                 Configuration = builder.Build();
 
-                var CONFI = new FallenAngelHandy.Configuration();
+                var CONFI = new FallenAngelHandy.Config();
                 Configuration.Bind(CONFI);
 
-                Launcher.Config = CONFI;
+                Game.Config = CONFI;
                 Application.SetHighDpiMode(HighDpiMode.SystemAware);
                 Application.EnableVisualStyles();
                 Application.SetCompatibleTextRenderingDefault(false);
-                Application.Run(new FrmLauncher());
+                Application.Run(new FrmGame());
             }
 
 

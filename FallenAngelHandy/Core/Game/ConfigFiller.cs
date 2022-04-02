@@ -4,7 +4,7 @@ using System.Text;
 
 namespace FallenAngelHandy.Core.Configuration
 {
-    public class FillerConfig
+    public class ConfigFiller
     {
         public int MinSpeed { get; set; } = 50;
         public int MaxSpeed { get; set; } = 100;
