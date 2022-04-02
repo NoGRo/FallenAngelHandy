@@ -12,22 +12,20 @@ namespace FallenAngelHandy
         #region Add Commands and manipulate Current Sequence
         private  List<CmdLinear> Sequence { get; set; } = new List<CmdLinear>();
 
-        public List<CmdLinear> GenerateSecuence()
+        public List<CmdLinear> Generate()
         {
-            
             var resul = Sequence.ToList();
             Clear();
             return resul;
-            
         }
-        public int lastValue => Sequence.Last()?.Value ?? 0;
+        public int lastValue => Sequence.LastOrDefault()?.Value ?? Convert.ToInt32(ButtplugService.GetCurrentValue());
         public void Clear()
             => Sequence.Clear();
 
         //go to a value at speed (Use starting point to calculate speed)
         public void AddCommandSpeed(int speed, int value, int? currentValue = null)
         {
-            var cmd = CmdLinear.GetCommandSpeed(speed, value, currentValue ?? Sequence.LastOrDefault()?.Value ?? ButtplugService.GetCurrentValue());
+            var cmd = CmdLinear.GetCommandSpeed(speed, value, currentValue ?? lastValue);
             Sequence.Add(cmd);
         }
         //go to a value in Milliseconds 

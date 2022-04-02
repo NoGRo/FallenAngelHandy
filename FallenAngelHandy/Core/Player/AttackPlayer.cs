@@ -74,26 +74,26 @@ namespace FallenAngelHandy
         {
             SB.AddCommandSpeed(Game.Config.HitSpeed, Convert.ToInt32(hp * 1.5), ButtplugService.GetCurrentValue());
             SB.AddCommandSpeed(Game.Config.HitSpeed, 0);
-            await ButtplugService.SendCmd(SB.GenerateSecuence());
+            await ButtplugService.SendCmd(SB.Generate());
         }
         private static async Task HitPleasure()
         {
             SB.AddCommandSpeed(Game.Config.HitSpeed, 100 - Convert.ToInt32(hp * 1.5), ButtplugService.GetCurrentValue());
             SB.AddCommandSpeed(Game.Config.HitSpeed, 100);
-            await ButtplugService.SendCmd(SB.GenerateSecuence());
+            await ButtplugService.SendCmd(SB.Generate());
         }
 
         private static async Task Laser()
         {
             laserCmds();
 
-            await ButtplugService.InsertCmd(SB.GenerateSecuence()); //inser over filler and continue 
+            await ButtplugService.InsertCmd(SB.Generate()); //inser over filler and continue 
         }
         private static async Task LaserExtra()
         {
             laserCmds(true);
 
-            await ButtplugService.SendCmd(SB.GenerateSecuence()); //inser over filler and continue 
+            await ButtplugService.SendCmd(SB.Generate()); //inser over filler and continue 
         }
 
         private static void laserCmds(bool extra = false)

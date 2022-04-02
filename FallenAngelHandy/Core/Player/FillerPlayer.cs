@@ -22,7 +22,7 @@ namespace FallenAngelHandy
             addDelay();
             GenerateSicle();
 
-            await ButtplugService.SendCmd(SB.GenerateSecuence());
+            await ButtplugService.SendCmd(SB.Generate());
         }
 
         public static async Task RePlay()
@@ -30,7 +30,7 @@ namespace FallenAngelHandy
             SB.Clear();
             GenerateSicle();
 
-            await ButtplugService.SendCmd(SB.GenerateSecuence());
+            await ButtplugService.SendCmd(SB.Generate());
         }
 
 
