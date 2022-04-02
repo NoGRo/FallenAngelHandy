@@ -1,0 +1,103 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.IO;
+using System.Text.Json;
+using System.Resources;
+using System.Collections;
+using System.Reflection;
+
+namespace FallenAngelHandy
+{
+    public static class GalleryRepository
+    {
+        
+        
+        private static Dictionary<string, IEnumerable<(uint, byte)>> dicGallery = new Dictionary<string, IEnumerable<(uint, byte)>>();
+
+        public static void Init()
+        {
+            GalleryFromFolder();
+        }
+
+        private static void GalleryFromFolder() {
+            var GalleryPath = "Gallery\\";
+            var files = Directory.GetFiles(GalleryPath, "*.funscript").Select(x => new FileInfo(x)).Where(x => x.Length > 0);
+            foreach (var file in files)
+            {
+                FunScriptFile funscript = null;
+                try
+                {
+                    funscript = JsonSerializer.Deserialize<FunScriptFile>(File.ReadAllText(file.FullName));
+                }
+                catch
+                {
+                    continue;
+                }
+                var gallery = new List<(uint, byte)>();
+
+                long lastInit = 0;
+                foreach (var action in funscript.actions)
+                {
+                    var cmd = (Convert.ToUInt32(action.at - lastInit), action.pos);
+                    gallery.Add(cmd);
+                    lastInit = action.at;
+                }
+                dicGallery.Add(file.Name.Replace(file.Extension,""), gallery);
+            }
+        }
+        public static List<string> GetNames()
+            => dicGallery.Keys.ToList(); 
+
+        public static List<CmdLinear> Get(string name)
+        {
+            var gallery = dicGallery.GetValueOrDefault(name)?.ToCmdLinear();
+
+            return gallery;
+
+        }
+
+        public static List<CmdLinear> GetRandom()
+            =>  dicGallery.Values.ElementAt(new Random().Next(0, dicGallery.Values.Count())).ToCmdLinear();
+            
+        
+        private static List<CmdLinear> ToCmdLinear(this IEnumerable<(uint, byte)> lst)
+            => lst
+                .Select(x => CmdLinear.GetCommand(x.Item1, x.Item2))
+                .Where(x=> x.Millis != 0)
+                .ToList();
+
+        public static List<CmdLinear> TrimGalleryTimeTo(this List<CmdLinear> gallery, int maxTime)
+        {
+            if (!gallery.Any())
+                return gallery;
+
+            var countTime = 0;
+            var cropAt = 0;
+            CmdLinear lastItem = null;
+            foreach (var item in gallery)
+            {
+                countTime += item.Millis;
+                if (countTime > maxTime)
+                {
+                    lastItem = item;
+                    cropAt = gallery.IndexOf(item);
+                    lastItem.Millis -= (countTime - maxTime);
+                    break;
+                }
+            }
+            if (cropAt != 0 && cropAt != gallery.Count())
+            {
+                gallery.RemoveRange(cropAt, gallery.Count() - cropAt);
+                gallery.Add(lastItem);
+            }
+            else if (countTime < maxTime)
+            {
+                gallery.Last().Millis += (maxTime - countTime);
+            }
+
+            return gallery;
+        }
+    }
+}
