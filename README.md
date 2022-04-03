@@ -16,7 +16,7 @@ The game has more than 150 sex scenes, 37 min of funscript unique content, 7 lev
 
 
 # How to integrate other games.
-Once the project is copied, you will need to modify the following files:
+you will need to modify the following files:
 
 #### Game
  1. **Status**, it has the state of the game like the character's HP, power-ups and that kind of information
