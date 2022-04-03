@@ -37,20 +37,21 @@ provides methods to control the device and play the funscripts
 build a dynamic funscript using game values such as hit damage, hp, busters, etc.
 
 #### GameListener
-Minimalist http server, listens for request on a port specified in the configuration class, captures the Route and QueryString and sends them to the player class 
+Minimalist http server, listens for request on a port specified in the configuration class, captures the Route and QueryString and sends them to the player class. 
 
 ## Mod the game
 To make your own integration you will need the game to send http request to the Listener, reporting the events of the game.
-How to do it depends on what technology the game is made on. many H-Games are either Game Maker Studio 2 (GMS2) projects, or based on HTML and Javascript
+How to do it depends on what technology the game is made on. 
+Many H-Games are either Game Maker Studio 2 (GMS2) projects, or based on HTML and Javascript.
 
 ### GMS2, UndertaleModTool
-If the game has a **data.win** file, you can open it and modify its code with UndertaleModTool, you need to find where the events you want to capture happen. and there call the following function makes a call http.
+If the game has a **data.win** file, you can open it and modify with UndertaleModTool, you need to find where the events you want to capture happen. and there call the following function makes a call http.
 example:
 
 ``http_post_string("http://127.0.0.1:5050/game/hit_pain?strength=" + string(attackHp), "")``
 
 ### HTML and JavaScript.
-you can find inside the game a **www** folder containing all the game files including a **js** folder, if you are lucky this folder is not minified. You must find where the events you want to capture occur, and make an http call using the fetch function.
+You can find inside the game a **www** folder containing all the game files including a **js** folder, if you are lucky this folder is not minified. You must find where the events you want to capture occur, and make an http call using the fetch function.
 example:
 
 `fetch("http://127.0.0.1:5050/game/hit_pain?strength=" + string(attackHp))`
