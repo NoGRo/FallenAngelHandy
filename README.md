@@ -20,7 +20,7 @@ you will need to modify the following files:
 
 #### Game
  1. **Status**, it has the state of the game like the character's HP, power-ups and that kind of information
- 2. **Config**, bundle configuration values ​​so they're not hardcoded everywhere, such as filler speed and length or gallery path.
+ 2. **Config**, configuration values ​​so they're not hardcoded everywhere, such as filler speed and length or gallery path.
 #### Player
 1. **Player** captures all the events coming from the game, coordinates the game modes by delegating the logics to the different players
 2. **Attack, Gallery, Filler** control the device according to the events and parameters received from the game. you have to write your own logics according to the dynamics of the game you want to integrate
