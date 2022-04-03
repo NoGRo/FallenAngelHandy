@@ -37,14 +37,14 @@ namespace FallenAngelHandy
                     if (!string.IsNullOrEmpty(gallery)) //PlayGallery
                     {
                         Mode = PlayerModeEnum.Gallery;
-                        await GalleryPlayer.Play(gallery);
+                        await Gallery.Play(gallery);
                         OnStatusChange($"Gallery {gallery}");
                     }
                     else if (Mode == PlayerModeEnum.Gallery) //stop -> Filler
                     {
                         Mode = PlayerModeEnum.Filler;
-                        await GalleryPlayer.StopAsync();
-                        await FillerPlayer.Play();
+                        await Gallery.StopAsync();
+                        await Filler.Play();
                         OnStatusChange("Filler");
                     }
                     break;
@@ -60,7 +60,7 @@ namespace FallenAngelHandy
 
                 default:
                     Mode = PlayerModeEnum.Attack;
-                    await AttackPlayer.Play(gameEvent,Data);
+                    await Attack.Play(gameEvent,Data);
                     OnStatusChange($"Attack!");
                     break;
             }
@@ -85,16 +85,16 @@ namespace FallenAngelHandy
             switch (Mode)
             {
                 case PlayerModeEnum.Filler:
-                    await FillerPlayer.RePlay();
+                    await Filler.RePlay();
                     break;
                 case PlayerModeEnum.Attack:
                     Mode = PlayerModeEnum.Filler;
-                    await FillerPlayer.Play();
+                    await Filler.Play();
                     OnStatusChange("Filler");
                     break;
                 case PlayerModeEnum.Gallery:
                     //GameEventHandler("GalleryStop");
-                    await GalleryPlayer.RePlay();
+                    await Gallery.RePlay();
                     break;
                 default:
                     break;

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace FallenAngelHandy
 {
-    public static class FillerPlayer
+    public static class Filler
     {
 
         private static ScriptBuilder SB =  new ScriptBuilder();

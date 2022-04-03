@@ -11,7 +11,7 @@ using System.Collections.Specialized;
 
 namespace FallenAngelHandy
 {
-    public static class AttackPlayer
+    public static class Attack
     {
         private static double hp;
         private static ScriptBuilder SB = new ScriptBuilder();

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace FallenAngelHandy
 {
-    public static class GalleryPlayer
+    public static class Gallery
     {
         private static string currentGallery;
         private static List<CmdLinear> gallery;
