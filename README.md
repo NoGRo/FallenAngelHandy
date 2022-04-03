@@ -46,12 +46,14 @@ Many H-Games are either Game Maker Studio 2 (GMS2) projects, or based on HTML an
 
 ### GMS2, UndertaleModTool
 If the game has a **data.win** file, you can open it and modify with UndertaleModTool, you need to find where the events you want to capture happen. and there call the following function makes a call http.
+
 example:
 
 ``http_post_string("http://127.0.0.1:5050/game/hit_pain?strength=" + string(attackHp), "")``
 
 ### HTML and JavaScript.
 You can find inside the game a **www** folder containing all the game files including a **js** folder, if you are lucky this folder is not minified. You must find where the events you want to capture occur, and make an http call using the fetch function.
+
 example:
 
 `fetch("http://127.0.0.1:5050/game/hit_pain?strength=" + string(attackHp))`
