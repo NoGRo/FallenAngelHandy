@@ -1,4 +1,4 @@
-# FallenAngelHandy
+# Fallen Angel Handy
 This project is a buttplug integration for the game **Fallen Angel Marielle** to be played with a stroker device.
 
 ## How to play
