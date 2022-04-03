@@ -70,7 +70,7 @@ namespace FallenAngelHandy
         private static void GoHome()
         {
             if (ButtplugService.GetCurrentValue() != 0)
-                SB.AddCommandSpeed(Speed, 0, ButtplugService.GetCurrentValue());
+                SB.AddCommandSpeed(Speed, 0);
         }
         private static void addDelay()
         {
