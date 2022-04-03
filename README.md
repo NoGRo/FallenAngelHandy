@@ -12,3 +12,28 @@ is a platform game. where you go through a dungeon and fight with enemies, when 
 6. Once the device is connected and recognized, the **Launch button** will be enabled
 7. Whenever an enemy catches you, or a scene is played, let it run (don't skip) till loop (14 secs). 
 8. Try to climb a floor until you beat the final boss (without cum).
+
+
+# How to integrate other games.
+Once the project is copied, you will need to modify the following files:
+
+#### Game
+ 1. **Status**, it has the state of the game like the character's HP, power-ups and that kind of information
+ 2. **Config**, bundle configuration values ​​so they're not hardcoded everywhere, such as filler speed and length or gallery path.
+#### Player
+1. **Player** captures all the events coming from the game, coordinates the game modes by delegating the logics to the different players
+2. **Attack, Gallery, Filler** control the device according to the events and parameters received from the game. you have to write your own logics according to the dynamics of the game you want to integrate
+#### Gallery
+1. Contains all the Funscript files to be used.
+
+## Core
+you probably don't need to modify this part
+
+### ButtplugService 
+provides methods to control the device and play the funscripts
+
+### ScriptBuilder
+build a dynamic funscript using game values such as hit damage, hp, busters, etc.
+
+### GameListener
+Minimalist http server, listens for request on a port specified in the configuration class, captures the Route and QueryString and sends them to the player class 
