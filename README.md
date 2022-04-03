@@ -56,4 +56,4 @@ You can find inside the game a **www** folder containing all the game files incl
 
 example:
 
-`fetch("http://127.0.0.1:5050/game/hit_pain?strength=" + string(attackHp))`
+`fetch("http://127.0.0.1:5050/game/hit_pain?strength=" + attackHp)`
