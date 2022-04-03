@@ -8,6 +8,7 @@ using System.Timers;
 
 namespace FallenAngelHandy
 {
+    //Capture All mesages from GameListener, parse status and cordinate the diferents game modes with the others players
     public static class Player
     {
 
@@ -34,13 +35,13 @@ namespace FallenAngelHandy
                 case "gallery":
 
                     var gallery = Data["code"];
-                    if (!string.IsNullOrEmpty(gallery)) //PlayGallery
+                    if (!string.IsNullOrEmpty(gallery)) //Play Gallery
                     {
                         Mode = PlayerModeEnum.Gallery;
                         await Gallery.Play(gallery);
                         OnStatusChange($"Gallery {gallery}");
                     }
-                    else if (Mode == PlayerModeEnum.Gallery) //stop -> Filler
+                    else if (Mode == PlayerModeEnum.Gallery) //stop Gallery -> Filler
                     {
                         Mode = PlayerModeEnum.Filler;
                         await Gallery.StopAsync();
