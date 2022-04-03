@@ -7,29 +7,7 @@ using Newtonsoft.Json;
 
 namespace FallenAngelHandy
 {
-    /// <summary>
-    /// https://godoc.org/github.com/funjack/launchcontrol/protocol/funscript
-    /// 
-    /// Example:
-    /// 
-    /// {
-    ///	"version": "1.0",
-    ///	"inverted": false,
-    ///	"range": 90,
-    ///	"actions": [
-    ///		{"pos": 0, "at": 100},
-    ///		{"pos": 100, "at": 500},
-    ///		...
-    ///	]
-    ///}
-    ///
-    ///version: funscript version (optional, default="1.0")
-    ///inverted: positions are inverted (0=100,100=0) (optional, default=false)
-    ///range: range of moment to use in percent (0-100) (optional, default=90)
-    ///actions: script for a Launch
-    ///  pos: position in percent (0-100)
-    ///  at : time to be at position in milliseconds
-    /// </summary>
+
     public class FunScriptFile
     {
 

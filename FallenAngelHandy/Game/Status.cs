@@ -4,7 +4,7 @@ using System.Text;
 
 namespace FallenAngelHandy
 {
-    public class GameStatus
+    public class Status
     {
         public double Pleasure { get; set; }
         public double Pain { get; set; }
