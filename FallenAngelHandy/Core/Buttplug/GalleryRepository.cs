@@ -21,7 +21,7 @@ namespace FallenAngelHandy
         }
 
         private static void GalleryFromFolder() {
-            var GalleryPath = "Gallery\\";
+            var GalleryPath = $"{Game.Config.GalleryPath}\\";
             var files = Directory.GetFiles(GalleryPath, "*.funscript").Select(x => new FileInfo(x)).Where(x => x.Length > 0);
             foreach (var file in files)
             {

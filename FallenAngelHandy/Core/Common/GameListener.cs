@@ -22,7 +22,7 @@ namespace FallenAngelHandy
         public static async void StartListener()
         {
             HttpListener listener = new HttpListener();
-            listener.Prefixes.Add("http://127.0.0.1:5050/game/");
+            listener.Prefixes.Add(Game.Config.ListenerHost);
             listener.Start();
             
             while (true)
@@ -40,7 +40,7 @@ namespace FallenAngelHandy
         }
 
 
-        private static void parseEvent(HttpListenerRequest request)
+        private static async void parseEvent(HttpListenerRequest request)
         {
             CultureInfo.CurrentCulture = CultureInfo.GetCultureInfo("en-US");
             CultureInfo.CurrentUICulture = CultureInfo.GetCultureInfo("en-US");
