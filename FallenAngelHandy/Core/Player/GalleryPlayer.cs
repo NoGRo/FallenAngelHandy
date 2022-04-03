@@ -32,11 +32,11 @@ namespace FallenAngelHandy
             await ButtplugService.SendCmd(gallery);
         }
 
-        internal static void Stop()
+        internal static async Task StopAsync()
         {
             gallery = null;
             currentGallery = null;
-            ButtplugService.StopClear();
+            await ButtplugService.StopClear();
         }
     }
 }

@@ -176,9 +176,9 @@ namespace FallenAngelHandy
             }
         }
 
-        public static void StopClear()
+        public static async Task StopClear()
         {
-            Stop();
+            await Stop();
             queue.Clear();
         }
         public static async Task Resume()
@@ -191,7 +191,7 @@ namespace FallenAngelHandy
         }
 
         public static async Task Pause() 
-            => Stop();
+            => await Stop();
 
 
         public static async Task SendGallery(string GalleryName)
@@ -246,14 +246,14 @@ namespace FallenAngelHandy
             timerCmdEnd.Start();
             await sendtask;
         }
-        private static void OnCommandEnd(object sender, ElapsedEventArgs e)
+        private static async void OnCommandEnd(object sender, ElapsedEventArgs e)
         {
             timerCmdEnd.Stop();
             if (queue.Any()) 
             {
                 var cmd = queue.First();
                 queue.RemoveAt(0);
-                SendCmd(cmd);
+                await SendCmd(cmd);
                 
             }
             else 

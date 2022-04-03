@@ -43,7 +43,7 @@ namespace FallenAngelHandy
                     else if (Mode == PlayerModeEnum.Gallery) //stop -> Filler
                     {
                         Mode = PlayerModeEnum.Filler;
-                        GalleryPlayer.Stop();
+                        await GalleryPlayer.StopAsync();
                         await FillerPlayer.Play();
                         OnStatusChange("Filler");
                     }
