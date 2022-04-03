@@ -14,8 +14,6 @@ namespace FallenAngelHandy
     public static class AttackPlayer
     {
         private static double hp;
-        private static string acction;
-
         private static ScriptBuilder SB = new ScriptBuilder();
 
 
@@ -32,13 +30,13 @@ namespace FallenAngelHandy
 
             {
                 case "hit_pain":
-                    HitPain();
+                    await HitPain();
                     break;
                 case "hit_pleasure":
-                    HitPleasure();
+                    await HitPleasure();
                     break;
                 case "hit_fall":
-                    await ButtplugService.SendCmd(GalleryRepository.Get("fall"));
+                    await ButtplugService.SendGallery("fall");
                     break;
                 case "hit_fall_ground":
                     await ButtplugService.SendCmd(CmdLinear.GetCommandSpeed(Game.Config.AttackSpeed, 0, ButtplugService.GetCurrentValue()));
@@ -46,21 +44,21 @@ namespace FallenAngelHandy
                 case "jump_laser":
                 case "laser":
                 case "ledge_laser":
-                    Laser();
+                    await Laser();
                     break;
 
                 case "uppercut_laser_prep":
-                    await ButtplugService.SendCmd(GalleryRepository.Get("uppercut_prep"));
+                    await ButtplugService.SendGallery("uppercut_prep");
                     break;
                 case "uppercut_laser":
-                    LaserExtra();
+                    await LaserExtra();
                     break;
                 case "crounch_laser":
                     laserCmds();
-                    Laser();
+                    await Laser();
                     break;
                 case "stun":
-                    await ButtplugService.SendCmd(GalleryRepository.Get("stun"));
+                    await ButtplugService.SendGallery("stun");
                     break;
                 case "reverse":
                     Reverse();
@@ -72,13 +70,13 @@ namespace FallenAngelHandy
 
         private static async Task HitPain()
         {
-            SB.AddCommandSpeed(Game.Config.HitSpeed, Convert.ToInt32(hp * 1.5), ButtplugService.GetCurrentValue());
+            SB.AddCommandSpeed(Game.Config.HitSpeed, Convert.ToInt32(hp * 1.5));
             SB.AddCommandSpeed(Game.Config.HitSpeed, 0);
             await ButtplugService.SendCmd(SB.Generate());
         }
         private static async Task HitPleasure()
         {
-            SB.AddCommandSpeed(Game.Config.HitSpeed, 100 - Convert.ToInt32(hp * 1.5), ButtplugService.GetCurrentValue());
+            SB.AddCommandSpeed(Game.Config.HitSpeed, 100 - Convert.ToInt32(hp * 1.5));
             SB.AddCommandSpeed(Game.Config.HitSpeed, 100);
             await ButtplugService.SendCmd(SB.Generate());
         }

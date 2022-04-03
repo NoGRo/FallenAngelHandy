@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace FallenAngelHandy
 {
@@ -9,7 +10,7 @@ namespace FallenAngelHandy
     {
         private static string currentGallery;
         private static List<CmdLinear> gallery;
-        public static void Play(string galleryName)
+        public static async Task Play(string galleryName)
         {
             if (!Game.Config.SexScenes 
                 || currentGallery == galleryName)
@@ -24,11 +25,11 @@ namespace FallenAngelHandy
 
             gallery = gallery.TrimGalleryTimeTo(14000);
 
-            ButtplugService.SendCmd(gallery);
+            await ButtplugService.SendCmd(gallery);
         }
-        public static void RePlay()
+        public static async Task RePlay()
         {
-            ButtplugService.SendCmd(gallery);
+            await ButtplugService.SendCmd(gallery);
         }
 
         internal static void Stop()

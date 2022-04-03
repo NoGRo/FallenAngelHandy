@@ -194,6 +194,10 @@ namespace FallenAngelHandy
             => Stop();
 
 
+        public static async Task SendGallery(string GalleryName)
+        {
+            await SendCmd(GalleryRepository.Get(GalleryName));
+        }
         public static async Task SendCmd(List<CmdLinear> cmds)
         {
             queue = cmds.ToList();
@@ -231,7 +235,7 @@ namespace FallenAngelHandy
             {
                 sendtask = device.SendVibrateCmd(cmd.vibrateValue);
             }
-
+              
             var pases = (DateTime.Now - start).TotalMilliseconds;
 
             cmd.Sent = DateTime.Now;

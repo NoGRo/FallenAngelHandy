@@ -24,7 +24,7 @@ namespace FallenAngelHandy
         {
             ButtplugService.QueueEnd += ButtplugService_QueueEnd;
         }
-        public static void GameEventHandler(string gameEvent,NameValueCollection Data)
+        public static async void GameEventHandler(string gameEvent,NameValueCollection Data)
         {
             if (!ButtplugService.isReady)
                 return;
@@ -37,22 +37,22 @@ namespace FallenAngelHandy
                     if (!string.IsNullOrEmpty(gallery)) //PlayGallery
                     {
                         Mode = PlayerModeEnum.Gallery;
-                        GalleryPlayer.Play(gallery);
+                        await GalleryPlayer.Play(gallery);
                         OnStatusChange($"Gallery {gallery}");
                     }
                     else if (Mode == PlayerModeEnum.Gallery) //stop -> Filler
                     {
                         Mode = PlayerModeEnum.Filler;
                         GalleryPlayer.Stop();
-                        FillerPlayer.Play();
+                        await FillerPlayer.Play();
                         OnStatusChange("Filler");
                     }
                     break;
                 case "Pause":
-                    ButtplugService.Pause();
+                    await ButtplugService.Pause();
                     break;
                 case "Resume":
-                    ButtplugService.Resume();
+                    await ButtplugService.Resume();
                     break;
                 case "state":
                     ParseStatus(Data);
@@ -60,7 +60,7 @@ namespace FallenAngelHandy
 
                 default:
                     Mode = PlayerModeEnum.Attack;
-                    AttackPlayer.Play(gameEvent,Data);
+                    await AttackPlayer.Play(gameEvent,Data);
                     OnStatusChange($"Attack!");
                     break;
             }
@@ -77,7 +77,7 @@ namespace FallenAngelHandy
             Game.Status.Anus = Math.Min(double.Parse(Data["anus"]), 100);
         }
 
-        private static void ButtplugService_QueueEnd(object sender, CmdLinear e)
+        private static async void ButtplugService_QueueEnd(object sender, CmdLinear e)
         {
             if (!ButtplugService.isReady)
                 return;
@@ -85,16 +85,16 @@ namespace FallenAngelHandy
             switch (Mode)
             {
                 case PlayerModeEnum.Filler:
-                    FillerPlayer.RePlay();
+                    await FillerPlayer.RePlay();
                     break;
                 case PlayerModeEnum.Attack:
                     Mode = PlayerModeEnum.Filler;
-                    FillerPlayer.Play();
+                    await FillerPlayer.Play();
                     OnStatusChange("Filler");
                     break;
                 case PlayerModeEnum.Gallery:
                     //GameEventHandler("GalleryStop");
-                    GalleryPlayer.RePlay();
+                    await GalleryPlayer.RePlay();
                     break;
                 default:
                     break;
