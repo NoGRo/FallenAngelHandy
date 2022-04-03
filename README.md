@@ -1,7 +1,7 @@
 # Fallen Angel Handy
-This project is a buttplug integration for the H-Game **Fallen Angel Marielle - Ascend The Futanari Tower** to be played with a stroker device.G
+This project is a buttplug integration for the H-Game **Fallen Angel Marielle - Ascend The Futanari Tower** to be played with a stroker device.
 
-is a platform game. where you go through a dungeon and fight with enemies, when an enemy catches you, a sex scene is played in the device for 14 seconds. 
+is a platform game, where you go through a dungeon and fight with enemies, when an enemy catches you, a sex scene is played in the device for 14 seconds. 
 The game has more than 150 sex scenes, 37 min of funscript unique content, 7 levels, 9 bosses, a fun and challenging progression.
 
 ## How to play
