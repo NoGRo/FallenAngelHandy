@@ -18,6 +18,8 @@ namespace FallenAngelHandy
         public static void Init()
         {
             GalleryFromFolder();
+            if(!string.IsNullOrEmpty(Game.Config.GalleryUseVariant))
+                GalleryFromFolder(Game.Config.GalleryUseVariant);
         }
 
         public static void SetVariant(string code)
