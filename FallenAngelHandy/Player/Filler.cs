@@ -16,6 +16,8 @@ namespace FallenAngelHandy
 
         public static async Task Play()
         {
+            if (!Game.Config.Filler)
+                return;
 
             SB.Clear();
             GoHome();
@@ -27,6 +29,9 @@ namespace FallenAngelHandy
 
         public static async Task RePlay()
         {
+            if (!Game.Config.Filler)
+                return;
+
             SB.Clear();
             GenerateSicle();
 

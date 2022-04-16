@@ -20,6 +20,8 @@ namespace FallenAngelHandy
 
         public static async Task Play(string gameEvent, NameValueCollection Data)
         {
+            if (!Game.Config.Attacks)
+                return;
 
             SB.Clear();
             

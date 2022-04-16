@@ -23,6 +23,7 @@ namespace FallenAngelHandy
         }
         public static CmdLinear GetCommandMillis(int millis, int value)
         {
+            
             return new CmdLinear 
             { 
                 Millis = millis,
@@ -41,23 +42,19 @@ namespace FallenAngelHandy
 
 
         public int Millis { get; set; }
-        public int Speed { get; set; }
+        public int Speed { get; set; } //TODO calculate Speed
 
         public bool Direction => Value > InitialValue;
         public byte Value { get; set; }
         public byte InitialValue { get; set; }
         
         public double LinearValue => Math.Min(1.0, Math.Max(0, Value / (double)100));
-        public double vibrateValue => Math.Min(1.0, Math.Max(0, Speed / (double)SpeedLimit));
+        public double VibrateValue => Math.Min(1.0, Math.Max(0, Speed / (double)SpeedLimit));
 
-        public uint buttplugMillis => (uint)Millis;
+        public uint ButtplugMillis => (uint)Millis;
 
 
         public DateTime? Sent { get; set; }
         public DateTime? Stoped { get; set; }
-
-
-
-
     }
 }

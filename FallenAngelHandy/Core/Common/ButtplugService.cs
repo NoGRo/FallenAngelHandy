@@ -229,11 +229,11 @@ namespace FallenAngelHandy
             var start = DateTime.Now;
             if (device.AllowedMessages.ContainsKey(ServerMessage.Types.MessageAttributeType.LinearCmd))
             {
-                sendtask = device.SendLinearCmd(cmd.buttplugMillis, cmd.LinearValue);
+                sendtask = device.SendLinearCmd(cmd.ButtplugMillis, cmd.LinearValue);
             }
             else if (device.AllowedMessages.ContainsKey(ServerMessage.Types.MessageAttributeType.VibrateCmd))
             {
-                sendtask = device.SendVibrateCmd(cmd.vibrateValue);
+                sendtask = device.SendVibrateCmd(cmd.VibrateValue);
             }
               
             var pases = (DateTime.Now - start).TotalMilliseconds;
@@ -260,8 +260,6 @@ namespace FallenAngelHandy
             {
                 QueueEnd?.Invoke(null, LastCommandSent);
             }
-
-           // CommandEnd?.Invoke(null, LastCommandSent);
         }
 
         public static async Task Stop()
