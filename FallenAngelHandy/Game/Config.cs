@@ -42,7 +42,32 @@ namespace FallenAngelHandy
         public bool Attacks { get; set; } = true;
         public bool SexScenes { get; set; } = true;
         public bool Filler { get; set; } = true;
-        
+
+        private static string path = $"{Environment.GetEnvironmentVariable("LocalAppData")}\\Fallen_Angel\\LauncherConfig.json";
+
+        public static void Load() 
+        {
+            try
+            {
+                if (!File.Exists(path))
+                    Save();
+                
+                Game.Config = JsonSerializer.Deserialize<Config>(File.ReadAllText(path));
+            }
+            catch 
+            {
+
+            }
+        }
+        public static void Save() {
+            try
+            {
+                File.WriteAllText(path, JsonSerializer.Serialize(Game.Config,new JsonSerializerOptions { WriteIndented = true}));
+            }
+            catch { 
+            }
+        }
+
     }
 }
 

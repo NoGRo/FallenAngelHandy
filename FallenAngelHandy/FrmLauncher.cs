@@ -27,6 +27,7 @@ namespace FallenAngelHandy
 
         private void Game_Load(object sender, EventArgs e)
         {
+            Config.Load();
             ButtplugService.init();
             GameListener.Init();
             GalleryRepository.Init();
