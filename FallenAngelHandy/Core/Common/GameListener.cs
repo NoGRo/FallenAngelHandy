@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Net;
 using System.Linq;
 using System.Text;
@@ -50,7 +51,7 @@ namespace FallenAngelHandy
             if (report != "state")
                 OnGameEventArrive($"{DateTime.Now.ToString("mm:ss:ff")}: {request.Url.PathAndQuery}");
 
-            Player.GameEventHandler(report, request.QueryString);
+            Player.GameEventHandler(report, request.QueryString ??  new NameValueCollection());
        
         }
 

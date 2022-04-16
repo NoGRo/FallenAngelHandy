@@ -20,9 +20,18 @@ namespace FallenAngelHandy
             GalleryFromFolder();
         }
 
-        private static void GalleryFromFolder() {
-            var GalleryPath = $"{Game.Config.GalleryPath}\\";
-            var files = Directory.GetFiles(GalleryPath, "*.funscript").Select(x => new FileInfo(x)).Where(x => x.Length > 0);
+        public static void SetVariant(string code)
+            => GalleryFromFolder(code);
+
+        private static void GalleryFromFolder(string variantCode = null) {
+            var GalleryPath = $"{Game.Config.GalleryPath}\\" + (!string.IsNullOrEmpty(variantCode) ? variantCode+"\\" : "");
+
+            if (!Directory.Exists($"{GalleryPath}"))
+                return;
+
+            var files = Directory.GetFiles(GalleryPath , "*.funscript").Select(x => new FileInfo(x)).Where(x => x.Length > 0);
+            
+
             foreach (var file in files)
             {
                 FunScriptFile funscript = null;
@@ -43,7 +52,13 @@ namespace FallenAngelHandy
                     gallery.Add(cmd);
                     lastInit = action.at;
                 }
-                dicGallery.Add(file.Name.Replace(file.Extension,""), gallery);
+
+                var name = file.Name.Replace(file.Extension, "");
+
+                if (dicGallery.ContainsKey(name))
+                    dicGallery.Remove(name);
+
+                dicGallery.Add(name, gallery);
             }
         }
         public static List<string> GetNames()
@@ -65,7 +80,7 @@ namespace FallenAngelHandy
                 .Select(x => CmdLinear.GetCommand(x.Item1, x.Item2))
                 .Where(x=> x.Millis != 0)
                 .ToList();
-
+        
         public static List<CmdLinear> TrimGalleryTimeTo(this List<CmdLinear> gallery, int maxTime)
         {
             if (!gallery.Any())

@@ -6,8 +6,8 @@ namespace FallenAngelHandy
 {
     public class CmdLinear 
     {
-
         const int SpeedLimit = 450;
+
         public static CmdLinear GetCommandSpeed(int speed, int value, int initialValue)
         {
             speed = speed > SpeedLimit ? SpeedLimit : speed;
@@ -56,5 +56,19 @@ namespace FallenAngelHandy
 
         public DateTime? Sent { get; set; }
         public DateTime? Stoped { get; set; }
+        public int AbsoluteTime { get; internal set; }
+    }
+
+    public static class CmdLinearExtend
+    {
+        public static void AddAbsoluteTime(this List<CmdLinear> cmds)
+        {
+            var at = 0; 
+            foreach (var cmd in cmds)
+            {
+                at += cmd.Millis;
+                cmd.AbsoluteTime = at;
+            }
+        }
     }
 }

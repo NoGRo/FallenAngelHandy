@@ -6,6 +6,7 @@ using System.Text;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Timers;
+using static Buttplug.ServerMessage.Types;
 
 namespace FallenAngelHandy
 {
@@ -83,13 +84,22 @@ namespace FallenAngelHandy
         }
         private static void AddDevice(ButtplugClientDevice Device)
         {
-            if (Device.AllowedMessages.ContainsKey(ServerMessage.Types.MessageAttributeType.LinearCmd)
-                || Device.AllowedMessages.ContainsKey(ServerMessage.Types.MessageAttributeType.VibrateCmd))
+            if (Device.AllowedMessages.ContainsKey(MessageAttributeType.LinearCmd)
+                || Device.AllowedMessages.ContainsKey(MessageAttributeType.VibrateCmd))
             {
                 
                 device = Device;
                 client.StopScanningAsync();
-                SendCmd(CmdLinear.GetCommandMillis(1500,0)); //homming
+                
+                if (Device.Name != "The Handy" && device.AllowedMessages.ContainsKey(MessageAttributeType.LinearCmd))
+                    GalleryRepository.SetVariant("slow");
+                else if (Device.AllowedMessages.ContainsKey(MessageAttributeType.VibrateCmd) && !Device.AllowedMessages.ContainsKey(MessageAttributeType.LinearCmd))
+                    GalleryRepository.SetVariant("vibre");
+                
+
+                if (device.AllowedMessages.ContainsKey(MessageAttributeType.LinearCmd))
+                    SendCmd(CmdLinear.GetCommandMillis(1500, 0));
+
 
                 OnStatusChange($"Device Found [{Device.Name}]");
             }
@@ -153,6 +163,8 @@ namespace FallenAngelHandy
 
 
         public static bool Invert { get; set; }
+        public static DateTime SyncSend { get; set; }
+
         private static Timer timerCmdEnd = new Timer();
 
         private static List<CmdLinear> queue { get; set; } = new List<CmdLinear>();
@@ -200,7 +212,10 @@ namespace FallenAngelHandy
         }
         public static async Task SendCmd(List<CmdLinear> cmds)
         {
+            SyncSend = DateTime.Now;
             queue = cmds.ToList();
+            queue.AddAbsoluteTime();
+
             await Resume();
         }
 
@@ -212,7 +227,10 @@ namespace FallenAngelHandy
             cmds.Add(LastCommandSent);
             queue.InsertRange(0, cmds);
 
-           await SendCmd(queue.First());
+            SyncSend = DateTime.Now;
+            queue.AddAbsoluteTime();
+
+            await SendCmd(queue.First());
             queue.RemoveAt(0);
 
         }
@@ -225,27 +243,56 @@ namespace FallenAngelHandy
             if (Invert)
                 cmd.Value = Convert.ToByte(100-Convert.ToInt32(cmd.Value));
 
-
-            var start = DateTime.Now;
-            if (device.AllowedMessages.ContainsKey(ServerMessage.Types.MessageAttributeType.LinearCmd))
+            if (device.AllowedMessages.ContainsKey(MessageAttributeType.LinearCmd))
             {
                 sendtask = device.SendLinearCmd(cmd.ButtplugMillis, cmd.LinearValue);
             }
-            else if (device.AllowedMessages.ContainsKey(ServerMessage.Types.MessageAttributeType.VibrateCmd))
+            else if (device.AllowedMessages.ContainsKey(MessageAttributeType.VibrateCmd))
             {
                 sendtask = device.SendVibrateCmd(cmd.VibrateValue);
             }
-              
-            var pases = (DateTime.Now - start).TotalMilliseconds;
 
             cmd.Sent = DateTime.Now;
             LastCommandSent = cmd;
 
-            timerCmdEnd.Stop();
-            timerCmdEnd.Interval = cmd.Millis < pases ? 1 : cmd.Millis - pases;
-            timerCmdEnd.Start();
+            var time = cmd.AbsoluteTime != 0
+                        ? cmd.AbsoluteTime - CurrentTime
+                        : cmd.Millis;
+
+            if (time < 0)
+                await Seek();
+            else
+            {
+                timerCmdEnd.Stop();
+                timerCmdEnd.Interval = time;
+                timerCmdEnd.Start();
+            }
+            
+
             await sendtask;
         }
+
+
+        private static async Task Seek()
+        {
+            var next = queue.FirstOrDefault(x => x.AbsoluteTime >= CurrentTime);
+            if (next is null)
+                return;
+
+            var index = queue.IndexOf(next);
+            if (next.AbsoluteTime == CurrentTime && index < queue.Count)
+            {
+                await SendCmd(queue[index + 1]);
+                return;
+            }
+
+            LastCommandSent = index > 0 ? queue[index - 1] : null;
+            next.Millis = Convert.ToInt32(next.AbsoluteTime - CurrentTime);
+            await SendCmd(next);
+        }
+
+        private static double CurrentTime => (DateTime.Now - SyncSend).TotalMilliseconds;
+
         private static async void OnCommandEnd(object sender, ElapsedEventArgs e)
         {
             timerCmdEnd.Stop();

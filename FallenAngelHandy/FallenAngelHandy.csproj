@@ -7,6 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Core\Common\ButtplugService.cs~RF7322d79.TMP" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Buttplug" Version="2.0.3" />
     <PackageReference Include="Buttplug.Client.Connectors.WebsocketConnector" Version="0.5.9" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="5.0.0" />
@@ -488,6 +492,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="Gallery\tau.funscript">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Gallery\uppercut_prep.funscript">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="Gallery\werewolf_1.funscript">
