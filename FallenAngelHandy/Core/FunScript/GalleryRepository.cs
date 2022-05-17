@@ -17,8 +17,10 @@ namespace FallenAngelHandy
 
         public static void Init()
         {
+            dicGallery.Clear();
             GalleryFromFolder();
-            if(!string.IsNullOrEmpty(Game.Config.GalleryUseVariant))
+            if(!string.IsNullOrEmpty(Game.Config.GalleryUseVariant) 
+              && Game.Config.GalleryUseVariant != "Default")
                 GalleryFromFolder(Game.Config.GalleryUseVariant);
         }
 

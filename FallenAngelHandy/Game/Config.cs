@@ -16,7 +16,7 @@ namespace FallenAngelHandy
         public string ExePath { get; set; } = "Fallen Angel Marielle.exe";
         public string GalleryPath { get; set; } = "Gallery";
         public string GalleryUseVariant { get; set; } = null;
-
+        public string VibratorMode { get; set; } = "Speed";
 
         //Filler            
         public int MinSpeed { get; set; } = 50;
@@ -42,6 +42,7 @@ namespace FallenAngelHandy
         public bool Attacks { get; set; } = true;
         public bool SexScenes { get; set; } = true;
         public bool Filler { get; set; } = true;
+       
 
         private static string path = $"{Environment.GetEnvironmentVariable("LocalAppData")}\\Fallen_Angel\\LauncherConfig.json";
 

@@ -34,11 +34,16 @@ namespace FallenAngelHandy
             GameListener.GameEventArrive += GameListener_GameEventArrive;
             ButtplugService.StatusChange += ButtplugService_StatusChange;
             Player.StatusChange += Player_StatusChange;
-            cmbFiller.SelectedIndex = 0;
-            cmbFiller.Enabled = false;
             Player.Init();
+            loadForm();
         }
-
+        private void loadForm()
+        {
+            chkFiller.Checked = Game.Config.Filler;
+            chkSexScenes.Checked = Game.Config.SexScenes;
+            chkAttack.Checked = Game.Config.Attacks;
+            cmbScripts.Text = Game.Config.GalleryUseVariant;
+        }
         private void GameListener_GameEventArrive(object sender, string e)
         {
             txtLog.AppendText(e + Environment.NewLine);
@@ -66,14 +71,23 @@ namespace FallenAngelHandy
             gameSimulation.Show();
         }
 
-        private void chkAttack_CheckedChanged(object sender, EventArgs e) 
-            => Game.Config.Attacks = chkAttack.Checked;
+        private void chkAttack_CheckedChanged(object sender, EventArgs e)
+        {
+            Game.Config.Attacks = chkAttack.Checked;
+            Config.Save();
+        }
 
-        private void chkSexScenes_CheckedChanged(object sender, EventArgs e) 
-            => Game.Config.SexScenes = chkSexScenes.Checked;
+        private void chkSexScenes_CheckedChanged(object sender, EventArgs e)
+        {
+            Game.Config.SexScenes = chkSexScenes.Checked;
+            Config.Save();
+        }
 
-        private void chkFiller_CheckedChanged(object sender, EventArgs e) 
-            => Game.Config.Filler = chkFiller.Checked;
+        private void chkFiller_CheckedChanged(object sender, EventArgs e)
+        {
+            Game.Config.Filler = chkFiller.Checked;
+            Config.Save();
+        }
 
         private void txtLog_DoubleClick(object sender, EventArgs e)
         {
@@ -89,5 +103,34 @@ namespace FallenAngelHandy
         {
             ButtplugService.Connect();
         }
+
+        private void cmbScripts_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            Game.Config.GalleryUseVariant = cmbScripts.Text;
+            GalleryRepository.Init();
+            Config.Save();
+        }
+        private void cmbVibrator_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            Game.Config.VibratorMode = cmbVibrator.Text;
+            Config.Save();
+        }
+
+        private void txtLog_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label2_Click(object sender, EventArgs e)
+        {
+
+        }
+
+
     }
 }
