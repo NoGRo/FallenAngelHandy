@@ -5,7 +5,7 @@ is a platform game, where you go through a dungeon and fight with enemies, when 
 The game has more than 150 sex scenes, 37 min of funscript unique content, 7 levels, 9 bosses, a fun and challenging progression.
 
 ## How to play
-2. Download the modified version of the game [DOWNLOAD GAME](https://mega.nz/file/mcUylbAK#ijqQP7RmhxbAwuZSQ3TObOa-t6uZw3Ap1f0GRewWV3g)
+2. Download the modified version of the game [DOWNLOAD GAME](https://mega.nz/file/TJdmFS7Y#reRmaKpoi3s2jLA4f3QixyaaOzRpiuZLuLLxF40qJmA)
 2. Unpack the zip
 3. Open [Intiface](https://github.com/intiface/intiface-desktop/releases/download/v27.0.0/intiface-desktop-27.0.0-win.exe)
 4. Open **Fallen Angel Handy**.exe
