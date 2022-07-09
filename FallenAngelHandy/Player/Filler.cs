@@ -16,13 +16,14 @@ namespace FallenAngelHandy
 
         public static async Task Play()
         {
-            if (!Game.Config.Filler)
-                return;
+
 
             SB.Clear();
             GoHome();
             addDelay();
-            GenerateSicle();
+
+            if (Game.Config.Filler)
+                GenerateSicle();
 
             await ButtplugService.SendCmd(SB.Generate());
         }

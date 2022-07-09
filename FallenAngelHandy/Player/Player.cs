@@ -33,6 +33,8 @@ namespace FallenAngelHandy
             switch (gameEvent)
             {
                 case "gallery":
+                    if (!Game.Config.SexScenes)
+                        break;
 
                     var gallery = Data["code"];
                     if (!string.IsNullOrEmpty(gallery)) //Play Gallery
@@ -60,6 +62,8 @@ namespace FallenAngelHandy
                     break;
 
                 default:
+                    if (!Game.Config.Attacks)
+                        break;
                     Mode = PlayerModeEnum.Attack;
                     await Attack.Play(gameEvent,Data);
                     OnStatusChange($"Attack!");
