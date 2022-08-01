@@ -15,7 +15,7 @@ namespace FallenAngelHandy
         public string ListenerHost { get; set; } = "http://127.0.0.1:5050/game/";
         public string ExePath { get; set; } = "Fallen Angel Marielle.exe";
         public string GalleryPath { get; set; } = "Gallery";
-        public string GalleryUseVariant { get; set; } = null;
+        public string GalleryUseVariant { get; set; } = "Default";
         public string VibratorMode { get; set; } = "Speed";
 
         //Filler            

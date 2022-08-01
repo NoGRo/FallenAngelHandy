@@ -43,6 +43,7 @@ namespace FallenAngelHandy
             chkSexScenes.Checked = Game.Config.SexScenes;
             chkAttack.Checked = Game.Config.Attacks;
             cmbScripts.Text = Game.Config.GalleryUseVariant;
+            cmbVibrator.Text = Game.Config.VibratorMode;
         }
         private void GameListener_GameEventArrive(object sender, string e)
         {
