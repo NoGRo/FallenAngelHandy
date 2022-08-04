@@ -91,12 +91,6 @@ namespace FallenAngelHandy
                 
                 device = Device;
                 client.StopScanningAsync();
-                
-                if (Device.Name != "The Handy" && device.AllowedMessages.ContainsKey(MessageAttributeType.LinearCmd))
-                    GalleryRepository.SetVariant("slow");
-                else if (Device.AllowedMessages.ContainsKey(MessageAttributeType.VibrateCmd) && !Device.AllowedMessages.ContainsKey(MessageAttributeType.LinearCmd))
-                    GalleryRepository.SetVariant("vibre");
-                
 
                 if (device.AllowedMessages.ContainsKey(MessageAttributeType.LinearCmd))
                     SendCmd(CmdLinear.GetCommandMillis(1500, 0));

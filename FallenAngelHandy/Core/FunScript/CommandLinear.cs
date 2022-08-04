@@ -50,7 +50,10 @@ namespace FallenAngelHandy
         public byte InitialValue { get; set; }
         
         public double LinearValue => Math.Min(1.0, Math.Max(0, Value / (double)100));
-        public double VibrateValue => Math.Min(1.0, Math.Max(0, Speed / (double)SpeedLimit));
+        public double VibrateValue => 
+            Game.Config.VibratorMode == "Speed" 
+                ? Math.Min(1.0, Math.Max(0, Speed / (double)SpeedLimit))
+                : Math.Min(1.0, Math.Max(0, Value / (double)75));
 
         public uint ButtplugMillis => (uint)Millis;
 

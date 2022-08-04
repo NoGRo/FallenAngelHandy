@@ -15,13 +15,14 @@ namespace FallenAngelHandy
         public string ListenerHost { get; set; } = "http://127.0.0.1:5050/game/";
         public string HandyKey { get; set; } = "";
         public string ExePath { get; set; } = "Fallen Angel Marielle.exe";
-        public string GalleryPath { get; set; } = @"Gallery";
+        public string GalleryPath { get; set; } = "Gallery";
+        public string GalleryUseVariant { get; set; } = "Default";
+        public string VibratorMode { get; set; } = "Speed";
 
 
         public readonly string UserDataPath = userDataPath;
         private static string userDataPath = $"{Environment.GetEnvironmentVariable("LocalAppData")}\\Fallen_Angel\\";
 
-        public string GalleryUseVariant { get; set; } = null;
 
 
         //Filler            

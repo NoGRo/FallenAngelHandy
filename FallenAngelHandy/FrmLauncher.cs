@@ -45,12 +45,21 @@ namespace FallenAngelHandy
             ButtplugService.init();
             ButtplugService.StatusChange += ButtplugService_StatusChange;
             Player.StatusChange += Player_StatusChange;
+            Player.Init();
+            loadForm();
 
             cmbFiller.SelectedIndex = 0;
             cmbFiller.Enabled = false;
             
         }
-
+        private void loadForm()
+        {
+            chkFiller.Checked = Game.Config.Filler;
+            chkSexScenes.Checked = Game.Config.SexScenes;
+            chkAttack.Checked = Game.Config.Attacks;
+            cmbScripts.Text = Game.Config.GalleryUseVariant;
+            cmbVibrator.Text = Game.Config.VibratorMode;
+        }
         private void GameListener_GameEventArrive(object sender, string e)
         {
             txtLog.AppendText(e + Environment.NewLine);
@@ -90,6 +99,11 @@ namespace FallenAngelHandy
             Config.Save();
         }
 
+        private void chkFiller_CheckedChanged(object sender, EventArgs e)
+        {
+            Game.Config.Filler = chkFiller.Checked;
+            Config.Save();
+        }
 
         private void chkFiller_CheckedChanged(object sender, EventArgs e)
         {
@@ -162,5 +176,34 @@ namespace FallenAngelHandy
                 string.Join("\r\n", finalFiles.Keys.Select(x => $".\\ffmpeg.exe -f concat -i AAA_{x}.txt -c copy -bsf:a aac_adtstoasc AAA_{x}.mp4"))
             );
         }
+
+        private void cmbScripts_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            Game.Config.GalleryUseVariant = cmbScripts.Text;
+            GalleryRepository.Init();
+            Config.Save();
+        }
+        private void cmbVibrator_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            Game.Config.VibratorMode = cmbVibrator.Text;
+            Config.Save();
+        }
+
+        private void txtLog_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label2_Click(object sender, EventArgs e)
+        {
+
+        }
+
+
     }
 }
