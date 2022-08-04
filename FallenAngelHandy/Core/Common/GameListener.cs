@@ -51,8 +51,11 @@ namespace FallenAngelHandy
             if (report != "state")
                 OnGameEventArrive($"{DateTime.Now.ToString("mm:ss:ff")}: {request.Url.PathAndQuery}");
 
-            Player.GameEventHandler(report, request.QueryString ??  new NameValueCollection());
-       
+            if(ButtplugService.isReady)
+                Player.GameEventHandler(report, request.QueryString ??  new NameValueCollection());
+            else if(HandyService.isReady)
+                PlayerScript.GameEventHandler(report, request.QueryString ?? new NameValueCollection());
+
         }
 
     }

@@ -11,6 +11,9 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Timers;
 using Timer = System.Timers.Timer;
+using FallenAngelHandy.Core;
+using System.IO;
+
 namespace FallenAngelHandy
 {
     public partial class FrmGame : Form
@@ -21,22 +24,31 @@ namespace FallenAngelHandy
 
         public FrmGame()
         {
- 
+
             InitializeComponent();
         }
 
         private void Game_Load(object sender, EventArgs e)
         {
             Config.Load();
-            ButtplugService.init();
             GameListener.Init();
-            GalleryRepository.Init();
+            GalleryBuilder.Init();
+
             GameListener.GameEventArrive += GameListener_GameEventArrive;
+
+            Player.Init();
+            PlayerScript.Init();
+            
+            HandyService.init();
+
+            HandyService.Connect(Game.Config.HandyKey);
+            ButtplugService.init();
             ButtplugService.StatusChange += ButtplugService_StatusChange;
             Player.StatusChange += Player_StatusChange;
+
             cmbFiller.SelectedIndex = 0;
             cmbFiller.Enabled = false;
-            Player.Init();
+            
         }
 
         private void GameListener_GameEventArrive(object sender, string e)
@@ -66,15 +78,24 @@ namespace FallenAngelHandy
             gameSimulation.Show();
         }
 
-        private void chkAttack_CheckedChanged(object sender, EventArgs e) 
-            => Game.Config.Attacks = chkAttack.Checked;
+        private void chkAttack_CheckedChanged(object sender, EventArgs e)
+        { 
+            Game.Config.Attacks = chkAttack.Checked;
+            Config.Save();
+        }
 
-        private void chkSexScenes_CheckedChanged(object sender, EventArgs e) 
-            => Game.Config.SexScenes = chkSexScenes.Checked;
+        private void chkSexScenes_CheckedChanged(object sender, EventArgs e)
+        {
+            Game.Config.SexScenes = chkSexScenes.Checked;
+            Config.Save();
+        }
 
-        private void chkFiller_CheckedChanged(object sender, EventArgs e) 
-            => Game.Config.Filler = chkFiller.Checked;
 
+        private void chkFiller_CheckedChanged(object sender, EventArgs e)
+        {
+            Game.Config.Filler = chkFiller.Checked;
+            Config.Save();
+        }
         private void txtLog_DoubleClick(object sender, EventArgs e)
         {
             txtLog.Clear();
@@ -88,6 +109,58 @@ namespace FallenAngelHandy
         private void btnConnect_Click(object sender, EventArgs e)
         {
             ButtplugService.Connect();
+        }
+
+        private void btnGenerateGallery_Click(object sender, EventArgs e)
+        {
+            string basepath = @"D:\Programacion\FallenAngelHandy\Fallen_Angel_eDIT\Gallery\";
+
+            var lines = File.ReadAllText(basepath + "enemies.txt").Split("\r\n").Where(x => !string.IsNullOrWhiteSpace(x)).Select(x => x.Trim());
+
+            var finalFiles = new Dictionary<string, List<string>>();
+
+            var currSection = new List<string>();
+            var allGalleries = GalleryRepository.GetNames();
+            foreach (var line in lines)
+            {
+                if (line.StartsWith("#"))
+                {
+                    currSection = new List<string>();
+                    finalFiles.Add(line.Replace("#", ""), currSection);
+                    continue;
+                }
+                currSection.AddRange(allGalleries
+                                        .Where(x => x.StartsWith(line)));
+
+            }
+            foreach (var key in finalFiles.Keys)
+            {
+                File.WriteAllText(
+                    path: basepath + $"AAA_{key}.txt",
+                    contents: string.Join("\r\n", finalFiles[key].Select(x => $"file '{x}.mp4'"))
+                    );
+                var sb = new ScriptBuilder();
+                foreach (var gal in finalFiles[key])
+                {
+                    //gallery
+                    //sb.AddGallery(gal);
+
+                    //Marks
+                    sb.AddCommandMillis(14000, 50);
+
+                };
+                new FunScriptFile(sb.Generate())
+                    .Save(basepath + $"AAA_{key}.funscript");
+                
+            }
+
+            File.WriteAllText(
+                path: basepath + $"AAA_MasterCmds.txt",
+                contents:
+                string.Join("\r\n", finalFiles.Keys.Select(x => $"del AAA_{x}.mp4"))
+                + "\r\n"+
+                string.Join("\r\n", finalFiles.Keys.Select(x => $".\\ffmpeg.exe -f concat -i AAA_{x}.txt -c copy -bsf:a aac_adtstoasc AAA_{x}.mp4"))
+            );
         }
     }
 }

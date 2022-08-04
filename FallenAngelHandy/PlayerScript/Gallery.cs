@@ -7,7 +7,7 @@ using FallenAngelHandy.Core;
 
 namespace FallenAngelHandy
 {
-    public static class GalleryPlayer
+    public static class GalleryScriptPlayer
     {
         
         private static string? gallery;
@@ -17,18 +17,19 @@ namespace FallenAngelHandy
                 || gallery == galleryName)
                 return;
 
+            gallery = galleryName;
 
-            await ButtplugService.SendGallery(galleryName);
+            await HandyService.SendGallery(galleryName);
         }
         public static async Task RePlay()
         {
-            await ButtplugService.SendGallery(gallery);
+            await HandyService.SendGallery(gallery);
         }
 
         internal static async Task StopAsync()
         {
             gallery = null;
-            await ButtplugService.StopClear();
+            await HandyService.Pause();
         }
     }
 }

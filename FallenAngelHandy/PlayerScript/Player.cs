@@ -9,7 +9,7 @@ using System.Timers;
 namespace FallenAngelHandy
 {
     //Capture All mesages from GameListener, parse status and cordinate the diferents game modes with the others players
-    public static class Player
+    public static class PlayerScript
     {
 
         public static PlayerModeEnum Mode;
@@ -21,16 +21,18 @@ namespace FallenAngelHandy
             StatusChange?.Invoke(null, e);
         }
 
-        public static void Init() 
+        public static void Init()
         {
-            ButtplugService.QueueEnd += ButtplugService_QueueEnd;
-        }
-        public static async void GameEventHandler(string gameEvent,NameValueCollection Data)
-        {
-            if (!ButtplugService.isReady)
-                return;
+            HandyService.QueueEnd += HandyService_QueueEnd;
+            Mode = PlayerModeEnum.Filler;
 
-            if (!ButtplugService.isReady)
+        }
+
+
+
+        public static async void GameEventHandler(string gameEvent, NameValueCollection Data)
+        {
+            if (!HandyService.isReady)
                 return;
 
             switch (gameEvent)
@@ -43,22 +45,22 @@ namespace FallenAngelHandy
                     if (!string.IsNullOrEmpty(gallery)) //Play Gallery
                     {
                         Mode = PlayerModeEnum.Gallery;
-                        await GalleryPlayer.Play(gallery);
+                        await GalleryScriptPlayer.Play(gallery);
                         OnStatusChange($"Gallery {gallery}");
                     }
                     else if (Mode == PlayerModeEnum.Gallery) //stop Gallery -> Filler
                     {
                         Mode = PlayerModeEnum.Filler;
-                        await GalleryPlayer.StopAsync();
-                        await Filler.Play();
+                        await GalleryScriptPlayer.StopAsync();
+                        await FillerScript.Play();
                         OnStatusChange("Filler");
                     }
                     break;
                 case "Pause":
-                    await ButtplugService.Pause();
+                    await HandyService.Pause();
                     break;
                 case "Resume":
-                    await ButtplugService.Resume();
+                    await HandyService.Resume();
                     break;
                 case "state":
                     ParseStatus(Data);
@@ -68,7 +70,7 @@ namespace FallenAngelHandy
                     if (!Game.Config.Attacks)
                         break;
                     Mode = PlayerModeEnum.Attack;
-                    await Attack.Play(gameEvent,Data);
+                    await AttackScript.Play(gameEvent, Data);
                     OnStatusChange($"Attack!");
                     break;
             }
@@ -85,35 +87,31 @@ namespace FallenAngelHandy
             Game.Status.Anus = Math.Min(double.Parse(Data["anus"]), 100);
         }
 
-        private static async void ButtplugService_QueueEnd(object sender, CmdLinear e)
+        private static async void HandyService_QueueEnd(object sender, EventArgs e)
         {
-            if (!ButtplugService.isReady)
-                return;
-
-            switch (Mode)
             {
-                case PlayerModeEnum.Filler:
-                    await Filler.RePlay();
-                    break;
-                case PlayerModeEnum.Attack:
-                    Mode = PlayerModeEnum.Filler;
-                    await Filler.Play();
-                    OnStatusChange("Filler");
-                    break;
-                case PlayerModeEnum.Gallery:
-                    //GameEventHandler("GalleryStop");
-                    await GalleryPlayer.RePlay();
-                    break;
-                default:
-                    break;
+                if (!HandyService.isReady)
+                    return;
+
+                switch (Mode)
+                {
+                    case PlayerModeEnum.Filler:
+                        await FillerScript.RePlay();
+                        break;
+                    case PlayerModeEnum.Attack:
+                        Mode = PlayerModeEnum.Filler;
+                        await FillerScript.Play();
+                        OnStatusChange("Filler");
+                        break;
+                    case PlayerModeEnum.Gallery:
+                        //GameEventHandler("GalleryStop");
+                        await GalleryScriptPlayer.RePlay();
+                        break;
+                    default:
+                        break;
+                }
             }
         }
-    }
-    public enum PlayerModeEnum 
-    { 
-        Filler,
-        Attack,
-        Gallery
     }
 }
 

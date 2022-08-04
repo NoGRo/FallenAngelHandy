@@ -32,22 +32,28 @@ namespace FallenAngelHandy
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FrmGame));
             this.lblUrl = new System.Windows.Forms.Label();
             this.txtButtplugUrl = new System.Windows.Forms.TextBox();
-            this.cmbFiller = new System.Windows.Forms.ComboBox();
             this.grpConnection = new System.Windows.Forms.GroupBox();
             this.lblStatus = new System.Windows.Forms.Label();
             this.btnConnect = new System.Windows.Forms.Button();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.lblGameStatus = new System.Windows.Forms.Label();
             this.chkFiller = new System.Windows.Forms.CheckBox();
+            this.cmbFiller = new System.Windows.Forms.ComboBox();
             this.chkSexScenes = new System.Windows.Forms.CheckBox();
             this.chkAttack = new System.Windows.Forms.CheckBox();
             this.btnLaunch = new System.Windows.Forms.Button();
             this.btnSimulate = new System.Windows.Forms.Button();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.txtLog = new System.Windows.Forms.RichTextBox();
+            this.btnGenerateGallery = new System.Windows.Forms.Button();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.checkBox1 = new System.Windows.Forms.CheckBox();
+            this.checkBox2 = new System.Windows.Forms.CheckBox();
+            this.chkInvincibility = new System.Windows.Forms.CheckBox();
             this.grpConnection.SuspendLayout();
             this.groupBox3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+            this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
             // lblUrl
@@ -66,19 +72,6 @@ namespace FallenAngelHandy
             this.txtButtplugUrl.Size = new System.Drawing.Size(289, 31);
             this.txtButtplugUrl.TabIndex = 1;
             this.txtButtplugUrl.Text = "ws://localhost:12345/buttplug";
-            // 
-            // cmbFiller
-            // 
-            this.cmbFiller.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmbFiller.FormattingEnabled = true;
-            this.cmbFiller.Items.AddRange(new object[] {
-            "Just to Keep Up",
-            "Challange",
-            "Handcore"});
-            this.cmbFiller.Location = new System.Drawing.Point(325, 28);
-            this.cmbFiller.Name = "cmbFiller";
-            this.cmbFiller.Size = new System.Drawing.Size(182, 33);
-            this.cmbFiller.TabIndex = 10;
             // 
             // grpConnection
             // 
@@ -115,17 +108,16 @@ namespace FallenAngelHandy
             // groupBox3
             // 
             this.groupBox3.Controls.Add(this.lblGameStatus);
-            this.groupBox3.Controls.Add(this.cmbFiller);
             this.groupBox3.Controls.Add(this.chkFiller);
+            this.groupBox3.Controls.Add(this.cmbFiller);
             this.groupBox3.Controls.Add(this.chkSexScenes);
             this.groupBox3.Controls.Add(this.chkAttack);
             this.groupBox3.Location = new System.Drawing.Point(12, 127);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(671, 70);
+            this.groupBox3.Size = new System.Drawing.Size(671, 71);
             this.groupBox3.TabIndex = 6;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "React To";
-            this.groupBox3.Visible = false;
             // 
             // lblGameStatus
             // 
@@ -147,6 +139,19 @@ namespace FallenAngelHandy
             this.chkFiller.Text = "Filler:";
             this.chkFiller.UseVisualStyleBackColor = true;
             this.chkFiller.CheckedChanged += new System.EventHandler(this.chkFiller_CheckedChanged);
+            // 
+            // cmbFiller
+            // 
+            this.cmbFiller.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbFiller.FormattingEnabled = true;
+            this.cmbFiller.Items.AddRange(new object[] {
+            "Just to Keep Up",
+            "Challange",
+            "Handcore"});
+            this.cmbFiller.Location = new System.Drawing.Point(325, 23);
+            this.cmbFiller.Name = "cmbFiller";
+            this.cmbFiller.Size = new System.Drawing.Size(222, 33);
+            this.cmbFiller.TabIndex = 10;
             // 
             // chkSexScenes
             // 
@@ -177,7 +182,7 @@ namespace FallenAngelHandy
             // btnLaunch
             // 
             this.btnLaunch.Enabled = false;
-            this.btnLaunch.Location = new System.Drawing.Point(776, 206);
+            this.btnLaunch.Location = new System.Drawing.Point(776, 300);
             this.btnLaunch.Name = "btnLaunch";
             this.btnLaunch.Size = new System.Drawing.Size(112, 34);
             this.btnLaunch.TabIndex = 7;
@@ -187,7 +192,7 @@ namespace FallenAngelHandy
             // 
             // btnSimulate
             // 
-            this.btnSimulate.Location = new System.Drawing.Point(601, 206);
+            this.btnSimulate.Location = new System.Drawing.Point(601, 300);
             this.btnSimulate.Name = "btnSimulate";
             this.btnSimulate.Size = new System.Drawing.Size(169, 34);
             this.btnSimulate.TabIndex = 8;
@@ -209,18 +214,79 @@ namespace FallenAngelHandy
             // 
             // txtLog
             // 
-            this.txtLog.Location = new System.Drawing.Point(8, 246);
+            this.txtLog.Location = new System.Drawing.Point(12, 457);
             this.txtLog.Name = "txtLog";
             this.txtLog.Size = new System.Drawing.Size(926, 319);
             this.txtLog.TabIndex = 14;
             this.txtLog.Text = "";
             this.txtLog.DoubleClick += new System.EventHandler(this.txtLog_DoubleClick);
             // 
+            // btnGenerateGallery
+            // 
+            this.btnGenerateGallery.Location = new System.Drawing.Point(418, 300);
+            this.btnGenerateGallery.Name = "btnGenerateGallery";
+            this.btnGenerateGallery.Size = new System.Drawing.Size(158, 34);
+            this.btnGenerateGallery.TabIndex = 15;
+            this.btnGenerateGallery.Text = "GenerateGallery";
+            this.btnGenerateGallery.UseVisualStyleBackColor = true;
+            this.btnGenerateGallery.Click += new System.EventHandler(this.btnGenerateGallery_Click);
+            // 
+            // groupBox1
+            // 
+            this.groupBox1.Controls.Add(this.checkBox1);
+            this.groupBox1.Controls.Add(this.checkBox2);
+            this.groupBox1.Controls.Add(this.chkInvincibility);
+            this.groupBox1.Location = new System.Drawing.Point(12, 204);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(816, 71);
+            this.groupBox1.TabIndex = 12;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "Mods";
+            this.groupBox1.Visible = false;
+            // 
+            // checkBox1
+            // 
+            this.checkBox1.AutoSize = true;
+            this.checkBox1.Checked = true;
+            this.checkBox1.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.checkBox1.Location = new System.Drawing.Point(275, 30);
+            this.checkBox1.Name = "checkBox1";
+            this.checkBox1.Size = new System.Drawing.Size(175, 29);
+            this.checkBox1.TabIndex = 4;
+            this.checkBox1.Text = "Unlock Full Game";
+            this.checkBox1.UseVisualStyleBackColor = true;
+            // 
+            // checkBox2
+            // 
+            this.checkBox2.AutoSize = true;
+            this.checkBox2.Checked = true;
+            this.checkBox2.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.checkBox2.Location = new System.Drawing.Point(141, 30);
+            this.checkBox2.Name = "checkBox2";
+            this.checkBox2.Size = new System.Drawing.Size(128, 29);
+            this.checkBox2.TabIndex = 3;
+            this.checkBox2.Text = "Restric Skip";
+            this.checkBox2.UseVisualStyleBackColor = true;
+            // 
+            // chkInvincibility
+            // 
+            this.chkInvincibility.AutoSize = true;
+            this.chkInvincibility.Checked = true;
+            this.chkInvincibility.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.chkInvincibility.Location = new System.Drawing.Point(9, 30);
+            this.chkInvincibility.Name = "chkInvincibility";
+            this.chkInvincibility.Size = new System.Drawing.Size(126, 29);
+            this.chkInvincibility.TabIndex = 1;
+            this.chkInvincibility.Text = "Invincibility";
+            this.chkInvincibility.UseVisualStyleBackColor = true;
+            // 
             // FrmGame
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 25F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(946, 243);
+            this.ClientSize = new System.Drawing.Size(900, 344);
+            this.Controls.Add(this.groupBox1);
+            this.Controls.Add(this.btnGenerateGallery);
             this.Controls.Add(this.txtLog);
             this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.btnSimulate);
@@ -236,6 +302,8 @@ namespace FallenAngelHandy
             this.groupBox3.ResumeLayout(false);
             this.groupBox3.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+            this.groupBox1.ResumeLayout(false);
+            this.groupBox1.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -245,7 +313,6 @@ namespace FallenAngelHandy
         private System.Windows.Forms.Label lblUrl;
         private System.Windows.Forms.TextBox txtButtplugUrl;
         private System.Windows.Forms.GroupBox grpConnection;
-        public System.Windows.Forms.ComboBox cmbFiller;
         private System.Windows.Forms.Button btnConnect;
         private System.Windows.Forms.Label lblStatus;
         private System.Windows.Forms.GroupBox groupBox3;
@@ -257,6 +324,12 @@ namespace FallenAngelHandy
         private System.Windows.Forms.PictureBox pictureBox1;
         private System.Windows.Forms.Label lblGameStatus;
         private System.Windows.Forms.RichTextBox txtLog;
+        private System.Windows.Forms.Button btnGenerateGallery;
+        private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.CheckBox checkBox1;
+        private System.Windows.Forms.CheckBox checkBox2;
+        private System.Windows.Forms.CheckBox chkInvincibility;
+        public System.Windows.Forms.ComboBox cmbFiller;
     }
 }
 

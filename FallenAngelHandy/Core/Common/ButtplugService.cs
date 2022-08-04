@@ -7,6 +7,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Timers;
 using static Buttplug.ServerMessage.Types;
+using FallenAngelHandy.Core;
 
 namespace FallenAngelHandy
 {
@@ -208,7 +209,7 @@ namespace FallenAngelHandy
 
         public static async Task SendGallery(string GalleryName)
         {
-            await SendCmd(GalleryRepository.Get(GalleryName));
+            await SendCmd(GalleryRepository.Get(GalleryName)?.Commands);
         }
         public static async Task SendCmd(List<CmdLinear> cmds)
         {
@@ -243,6 +244,8 @@ namespace FallenAngelHandy
             if (Invert)
                 cmd.Value = Convert.ToByte(100-Convert.ToInt32(cmd.Value));
 
+            
+
             if (device.AllowedMessages.ContainsKey(MessageAttributeType.LinearCmd))
             {
                 sendtask = device.SendLinearCmd(cmd.ButtplugMillis, cmd.LinearValue);
@@ -259,12 +262,14 @@ namespace FallenAngelHandy
                         ? cmd.AbsoluteTime - CurrentTime
                         : cmd.Millis;
 
+            
+
             if (time < 0)
                 await Seek();
             else
             {
                 timerCmdEnd.Stop();
-                timerCmdEnd.Interval = time;
+                timerCmdEnd.Interval = time == 0 ? 1 : time;
                 timerCmdEnd.Start();
             }
             

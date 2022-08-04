@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Collections.Generic;
 using System.Text;
 
@@ -61,6 +62,9 @@ namespace FallenAngelHandy
 
     public static class CmdLinearExtend
     {
+        public static List<CmdLinear> Clone(this IEnumerable<CmdLinear> cmds) 
+            => cmds.Select(x => CmdLinear.GetCommandMillis(x.Millis, x.Value)).ToList();
+
         public static void AddAbsoluteTime(this List<CmdLinear> cmds)
         {
             var at = 0; 

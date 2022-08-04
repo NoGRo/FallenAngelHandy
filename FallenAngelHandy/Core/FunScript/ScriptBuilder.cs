@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FallenAngelHandy.Core;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,7 +10,7 @@ namespace FallenAngelHandy
     public class ScriptBuilder
     {
 
-        private  List<CmdLinear> Sequence { get; set; } = new List<CmdLinear>();
+        private List<CmdLinear> Sequence { get; set; } = new List<CmdLinear>();
 
         public List<CmdLinear> Generate()
         {
@@ -18,25 +19,43 @@ namespace FallenAngelHandy
             return resul;
         }
         public int lastValue => Sequence.LastOrDefault()?.Value ?? Convert.ToInt32(ButtplugService.GetCurrentValue());
+        public int TotalTime { get; private set; }
         public void Clear()
-            => Sequence.Clear();
+        {
+            Sequence.Clear();
+            TotalTime = 0;
+        }
 
         //go to a value at speed (Use starting point to calculate speed)
+        public void addCommand(CmdLinear cmd)
+        {
+            TotalTime += cmd.Millis;
+            cmd.AbsoluteTime = TotalTime;
+            Sequence.Add(cmd);
+        }
+        public void addCommands(IEnumerable<CmdLinear> cmds)
+        {
+            foreach (var cmd in cmds)
+            {
+                addCommand(cmd);
+            }
+        }
+
         public void AddCommandSpeed(int speed, int value, int? currentValue = null)
         {
             var cmd = CmdLinear.GetCommandSpeed(speed, value, currentValue ?? lastValue);
-            Sequence.Add(cmd);
+            addCommand(cmd);
         }
         //go to a value in Milliseconds 
         public void AddCommandMillis(int millis, int value)
         {
             var cmd = CmdLinear.GetCommandMillis(millis, value);
-            Sequence.Add(cmd);
+            addCommand(cmd);
         }
 
         public void AddGallery(string galleryName, int? TrimTimeMs = null)
         {
-            var gallery = GalleryRepository.Get(galleryName);
+            var gallery = GalleryRepository.Get(galleryName)?.Commands;
 
             if (gallery == null)
                 return;
@@ -44,9 +63,11 @@ namespace FallenAngelHandy
             if (TrimTimeMs != null)
                 gallery = gallery.TrimGalleryTimeTo(TrimTimeMs.Value);
 
-            Sequence.AddRange(gallery);
+            addCommands(gallery);
         }
 
+        internal void AddCommandSpeed(double speed, int value)
+        => AddCommandSpeed(Convert.ToInt32(speed), value);
 
         public void MergeCommands() //remove redundant commands from Sequence
         {

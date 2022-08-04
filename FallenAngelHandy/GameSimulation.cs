@@ -6,6 +6,7 @@ using System.Data;
 using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
+using FallenAngelHandy.Core;
 
 namespace FallenAngelHandy
 {
@@ -76,7 +77,7 @@ namespace FallenAngelHandy
                 var gallerys = GalleryRepository.GetNames();
                 gallery = gallerys[new Random().Next(0, gallerys.Count)];
             }
-            Player.GameEventHandler("gallery", new NameValueCollection
+            PlayerScript.GameEventHandler("gallery", new NameValueCollection
             {
                 { "code",gallery }
             });    
