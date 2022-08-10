@@ -21,7 +21,9 @@ namespace FallenAngelHandy
 
         public static bool isReady { get; set; }
         private static Timer timerCmdEnd = new Timer();
+        
         public static event EventHandler QueueEnd;
+        public static event EventHandler<string> StatusChange;
 
         private static int CurrentTime; //=> (DateTime.Now - SyncSend).TotalMilliseconds;
 
@@ -45,33 +47,57 @@ namespace FallenAngelHandy
             
         }
 
-        public static async Task Connect(string Key)
+        public static async Task Connect()
         {
+            string Key = Game.Config.HandyKey;
+            OnStatusChange("Connecting Handy");
             isReady = false;
             Client.DefaultRequestHeaders.Remove("X-Connection-Key");
             Client.DefaultRequestHeaders.Add("X-Connection-Key", Key);
 
             var resp =  await Client.GetAsync("connected");
-            if (resp.StatusCode != System.Net.HttpStatusCode.OK)
+            if (resp.StatusCode != System.Net.HttpStatusCode.OK) {
+                OnStatusChange("Can't Connect to Handy");
                 return;
+            }
+                
 
             var status = JsonConvert.DeserializeObject<ConnectedResponse>(await resp.Content.ReadAsStringAsync());
 
             if (!status.connected)
+            {
+                OnStatusChange("Handy is not Conected");
                 return;
+            }
+
+
+            OnStatusChange("Uploading & Sync");
             var blob = uploadBlob(GalleryRepository.Assets["csv"]);
 
             resp =  await Client.PutAsync("mode", new StringContent(JsonConvert.SerializeObject(new ModeRequest(1)), Encoding.UTF8, "application/json"));
+
+
             if (resp.StatusCode != System.Net.HttpStatusCode.OK)
+            {
+                OnStatusChange("Server fail Response");
                 return;
+            }
+                
 
             var upload = UploadHandy(await blob);
             await updateServerTime();
+            OnStatusChange("Uploading");
             await upload;
             isReady = true;
+            OnStatusChange("Connected");
             QueueEnd.Invoke(null,new EventArgs());
         }
-        
+
+        private static void OnStatusChange(string e)
+        {
+            StatusChange?.Invoke(null, e);
+        }
+
         public static async Task Resume()
         {
             await Seek(pauseTime);

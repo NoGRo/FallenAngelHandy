@@ -40,25 +40,35 @@ namespace FallenAngelHandy
             PlayerScript.Init();
             
             HandyService.init();
-
-            HandyService.Connect(Game.Config.HandyKey);
+            HandyService.Connect();
             ButtplugService.init();
+
             ButtplugService.StatusChange += ButtplugService_StatusChange;
+            HandyService.StatusChange += HandyService_StatusChange;
             Player.StatusChange += Player_StatusChange;
             Player.Init();
             loadForm();
-
-            cmbFiller.SelectedIndex = 0;
-            cmbFiller.Enabled = false;
-            
         }
+
+        private void HandyService_StatusChange(object sender, string e)
+        {
+            Invoke(new MethodInvoker(() =>
+            {
+                lblHandyStatus.Text = $"Status: {e}";
+                btnLaunch.Enabled = HandyService.isReady;
+            }));
+        }
+
         private void loadForm()
         {
             chkFiller.Checked = Game.Config.Filler;
             chkSexScenes.Checked = Game.Config.SexScenes;
             chkAttack.Checked = Game.Config.Attacks;
+            chkInvincibility.Checked = Game.Config.Invincibility;
             cmbScripts.Text = Game.Config.GalleryUseVariant;
             cmbVibrator.Text = Game.Config.VibratorMode;
+            txtHandyKey.Text = Game.Config.HandyKey;
+            
         }
         private void GameListener_GameEventArrive(object sender, string e)
         {
@@ -105,11 +115,6 @@ namespace FallenAngelHandy
             Config.Save();
         }
 
-        private void chkFiller_CheckedChanged(object sender, EventArgs e)
-        {
-            Game.Config.Filler = chkFiller.Checked;
-            Config.Save();
-        }
         private void txtLog_DoubleClick(object sender, EventArgs e)
         {
             txtLog.Clear();
@@ -180,7 +185,6 @@ namespace FallenAngelHandy
         private void cmbScripts_SelectedIndexChanged(object sender, EventArgs e)
         {
             Game.Config.GalleryUseVariant = cmbScripts.Text;
-            GalleryRepository.Init();
             Config.Save();
         }
         private void cmbVibrator_SelectedIndexChanged(object sender, EventArgs e)
@@ -188,7 +192,17 @@ namespace FallenAngelHandy
             Game.Config.VibratorMode = cmbVibrator.Text;
             Config.Save();
         }
+        private void chkInvincibility_CheckedChanged(object sender, EventArgs e)
+        {
+            Game.Config.Invincibility = chkInvincibility.Checked;
+            Config.Save();
+        }
 
+        private void txtHandyKey_TextChanged(object sender, EventArgs e)
+        {
+            Game.Config.HandyKey = txtHandyKey.Text;
+            Config.Save();
+        }
         private void txtLog_TextChanged(object sender, EventArgs e)
         {
 
@@ -204,6 +218,24 @@ namespace FallenAngelHandy
 
         }
 
+        private void groupBox1_Enter(object sender, EventArgs e)
+        {
 
+        }
+
+        private void label3_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btnHandyConnect_Click(object sender, EventArgs e)
+        {
+            HandyService.Connect();
+        }
+
+        private void btnConnect_Click_1(object sender, EventArgs e)
+        {
+
+        }
     }
 }

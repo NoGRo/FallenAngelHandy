@@ -15,15 +15,16 @@ namespace FallenAngelHandy
         public string ListenerHost { get; set; } = "http://127.0.0.1:5050/game/";
         public string HandyKey { get; set; } = "";
         public string ExePath { get; set; } = "Fallen Angel Marielle.exe";
-        public string GalleryPath { get; set; } = "Gallery";
-        public string GalleryUseVariant { get; set; } = "Default";
-        public string VibratorMode { get; set; } = "Speed";
+
+        public string GalleryPath { get; set; } = @"Gallery";
 
 
         public readonly string UserDataPath = userDataPath;
         private static string userDataPath = $"{Environment.GetEnvironmentVariable("LocalAppData")}\\Fallen_Angel\\";
 
+        public string GalleryUseVariant { get; set; } = null;
 
+        public string VibratorMode { get; set; } = "Speed";
 
         //Filler            
         public int MinSpeed { get; set; } = 60;
@@ -50,10 +51,9 @@ namespace FallenAngelHandy
         public bool Attacks { get; set; } = true;
         public bool SexScenes { get; set; } = true;
         public bool Filler { get; set; } = true;
+
         public bool Invincibility { get; set; } = true;
         public bool ForceFucking { get; set; } = true;
-
-
 
         private static string path = userDataPath + "LauncherConfig.json";
 
@@ -63,32 +63,31 @@ namespace FallenAngelHandy
             {
                 if (!File.Exists(path))
                     Save();
-                
-                Game.Config = JsonSerializer.Deserialize<Config>(File.ReadAllText(path));
+
+                string json = File.ReadAllText(path);
+                Game.Config = JsonSerializer.Deserialize<Config>(json);
             }
             catch 
             {
 
             }
         }
-        public static void Save() {
-            try
-            {
-                File.WriteAllText(path, JsonSerializer.Serialize(Game.Config,new JsonSerializerOptions { WriteIndented = true}));
+        public static void Save() 
+        {
+            var pathConfig = userDataPath + "LauncherConfig.json";
+            File.WriteAllText(pathConfig, JsonSerializer.Serialize(Game.Config,new JsonSerializerOptions { WriteIndented = true}));
                 
-                var pathMar = userDataPath + "controls.mar";
-                var controls = JsonSerializer.Deserialize<dynamic>(File.ReadAllText(pathMar));
+            var pathMar = userDataPath + "controls.mar";
+            string json = File.ReadAllText(pathMar);
+            if(json.Substring(json.Length - 1, 1) == "\0")
+                json = json.Substring(0,json.Length - 1);
+            var controls = JsonSerializer.Deserialize<ControlsConfig>(json);
                 
-                controls.Root[0].invicibily = Game.Config.Invincibility ? 1.0 : 0.0;
-                controls.Root[0].force_fucking = Game.Config.ForceFucking ? 1.0 : 0.0;
+            controls.Root[0].invincibility = Game.Config.Invincibility ? 1.0 : 0.0;
+            controls.Root[0].force_fucking = Game.Config.ForceFucking ? 1.0 : 0.0;
 
-                File.WriteAllText(path, JsonSerializer.Serialize(controls));
-
-            }
-            catch { 
-            }
+            File.WriteAllText(pathMar, JsonSerializer.Serialize(controls));
         }
-
     }
 }
 
