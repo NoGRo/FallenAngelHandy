@@ -45,7 +45,7 @@ namespace FallenAngelHandy
             this.txtLog = new System.Windows.Forms.RichTextBox();
             this.btnGenerateGallery = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.checkBox2 = new System.Windows.Forms.CheckBox();
+            this.chkForceFucking = new System.Windows.Forms.CheckBox();
             this.chkInvincibility = new System.Windows.Forms.CheckBox();
             this.DeviceSelector = new System.Windows.Forms.TabControl();
             this.Handy = new System.Windows.Forms.TabPage();
@@ -58,6 +58,9 @@ namespace FallenAngelHandy
             this.btnConnect = new System.Windows.Forms.Button();
             this.txtButtplugUrl = new System.Windows.Forms.TextBox();
             this.lblUrl = new System.Windows.Forms.Label();
+            this.optInputKeyboard = new System.Windows.Forms.RadioButton();
+            this.optInputJoystick = new System.Windows.Forms.RadioButton();
+            this.label4 = new System.Windows.Forms.Label();
             this.groupBox3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.groupBox1.SuspendLayout();
@@ -73,7 +76,7 @@ namespace FallenAngelHandy
             this.cmbScripts.Items.AddRange(new object[] {
             "Default",
             "Slow"});
-            this.cmbScripts.Location = new System.Drawing.Point(450, 68);
+            this.cmbScripts.Location = new System.Drawing.Point(143, 100);
             this.cmbScripts.Margin = new System.Windows.Forms.Padding(2);
             this.cmbScripts.Name = "cmbScripts";
             this.cmbScripts.Size = new System.Drawing.Size(183, 33);
@@ -90,7 +93,7 @@ namespace FallenAngelHandy
             this.groupBox3.Margin = new System.Windows.Forms.Padding(2);
             this.groupBox3.Name = "groupBox3";
             this.groupBox3.Padding = new System.Windows.Forms.Padding(2);
-            this.groupBox3.Size = new System.Drawing.Size(671, 78);
+            this.groupBox3.Size = new System.Drawing.Size(543, 78);
             this.groupBox3.TabIndex = 6;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "React To";
@@ -149,18 +152,19 @@ namespace FallenAngelHandy
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(311, 29);
+            this.label2.Location = new System.Drawing.Point(8, 205);
             this.label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(132, 25);
             this.label2.TabIndex = 13;
             this.label2.Text = "Vibrator Mode:";
+            this.label2.Visible = false;
             this.label2.Click += new System.EventHandler(this.label2_Click);
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(315, 74);
+            this.label1.Location = new System.Drawing.Point(9, 100);
             this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(128, 25);
@@ -175,17 +179,18 @@ namespace FallenAngelHandy
             this.cmbVibrator.Items.AddRange(new object[] {
             "Speed",
             "Position"});
-            this.cmbVibrator.Location = new System.Drawing.Point(450, 26);
+            this.cmbVibrator.Location = new System.Drawing.Point(147, 202);
             this.cmbVibrator.Margin = new System.Windows.Forms.Padding(2);
             this.cmbVibrator.Name = "cmbVibrator";
             this.cmbVibrator.Size = new System.Drawing.Size(183, 33);
             this.cmbVibrator.TabIndex = 10;
+            this.cmbVibrator.Visible = false;
             this.cmbVibrator.SelectedIndexChanged += new System.EventHandler(this.cmbVibrator_SelectedIndexChanged);
             // 
             // btnLaunch
             // 
             this.btnLaunch.Enabled = false;
-            this.btnLaunch.Location = new System.Drawing.Point(761, 361);
+            this.btnLaunch.Location = new System.Drawing.Point(639, 392);
             this.btnLaunch.Margin = new System.Windows.Forms.Padding(2);
             this.btnLaunch.Name = "btnLaunch";
             this.btnLaunch.Size = new System.Drawing.Size(111, 32);
@@ -196,7 +201,7 @@ namespace FallenAngelHandy
             // 
             // btnSimulate
             // 
-            this.btnSimulate.Location = new System.Drawing.Point(709, 198);
+            this.btnSimulate.Location = new System.Drawing.Point(581, 184);
             this.btnSimulate.Margin = new System.Windows.Forms.Padding(2);
             this.btnSimulate.Name = "btnSimulate";
             this.btnSimulate.Size = new System.Drawing.Size(169, 32);
@@ -210,7 +215,7 @@ namespace FallenAngelHandy
             this.pictureBox1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.pictureBox1.Image = global::FallenAngelHandy.Properties.Resource.Marielle;
             this.pictureBox1.InitialImage = ((System.Drawing.Image)(resources.GetObject("pictureBox1.InitialImage")));
-            this.pictureBox1.Location = new System.Drawing.Point(709, 25);
+            this.pictureBox1.Location = new System.Drawing.Point(581, 11);
             this.pictureBox1.Margin = new System.Windows.Forms.Padding(2);
             this.pictureBox1.Name = "pictureBox1";
             this.pictureBox1.Size = new System.Drawing.Size(181, 164);
@@ -220,7 +225,7 @@ namespace FallenAngelHandy
             // 
             // txtLog
             // 
-            this.txtLog.Location = new System.Drawing.Point(11, 434);
+            this.txtLog.Location = new System.Drawing.Point(0, 465);
             this.txtLog.Margin = new System.Windows.Forms.Padding(2);
             this.txtLog.Name = "txtLog";
             this.txtLog.Size = new System.Drawing.Size(860, 332);
@@ -231,7 +236,7 @@ namespace FallenAngelHandy
             // 
             // btnGenerateGallery
             // 
-            this.btnGenerateGallery.Location = new System.Drawing.Point(475, 135);
+            this.btnGenerateGallery.Location = new System.Drawing.Point(406, 133);
             this.btnGenerateGallery.Margin = new System.Windows.Forms.Padding(2);
             this.btnGenerateGallery.Name = "btnGenerateGallery";
             this.btnGenerateGallery.Size = new System.Drawing.Size(158, 34);
@@ -242,34 +247,37 @@ namespace FallenAngelHandy
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.label4);
+            this.groupBox1.Controls.Add(this.optInputJoystick);
+            this.groupBox1.Controls.Add(this.optInputKeyboard);
             this.groupBox1.Controls.Add(this.label2);
             this.groupBox1.Controls.Add(this.cmbVibrator);
             this.groupBox1.Controls.Add(this.btnGenerateGallery);
             this.groupBox1.Controls.Add(this.label1);
-            this.groupBox1.Controls.Add(this.checkBox2);
+            this.groupBox1.Controls.Add(this.chkForceFucking);
             this.groupBox1.Controls.Add(this.chkInvincibility);
             this.groupBox1.Controls.Add(this.cmbScripts);
             this.groupBox1.Location = new System.Drawing.Point(12, 210);
             this.groupBox1.Margin = new System.Windows.Forms.Padding(2);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Padding = new System.Windows.Forms.Padding(2);
-            this.groupBox1.Size = new System.Drawing.Size(670, 186);
+            this.groupBox1.Size = new System.Drawing.Size(568, 221);
             this.groupBox1.TabIndex = 12;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Mods";
             this.groupBox1.Enter += new System.EventHandler(this.groupBox1_Enter);
             // 
-            // checkBox2
+            // chkForceFucking
             // 
-            this.checkBox2.AutoSize = true;
-            this.checkBox2.Enabled = false;
-            this.checkBox2.Location = new System.Drawing.Point(8, 65);
-            this.checkBox2.Margin = new System.Windows.Forms.Padding(2);
-            this.checkBox2.Name = "checkBox2";
-            this.checkBox2.Size = new System.Drawing.Size(128, 29);
-            this.checkBox2.TabIndex = 3;
-            this.checkBox2.Text = "Restric Skip";
-            this.checkBox2.UseVisualStyleBackColor = true;
+            this.chkForceFucking.AutoSize = true;
+            this.chkForceFucking.Location = new System.Drawing.Point(9, 63);
+            this.chkForceFucking.Margin = new System.Windows.Forms.Padding(2);
+            this.chkForceFucking.Name = "chkForceFucking";
+            this.chkForceFucking.Size = new System.Drawing.Size(128, 29);
+            this.chkForceFucking.TabIndex = 3;
+            this.chkForceFucking.Text = "Restric Skip";
+            this.chkForceFucking.UseVisualStyleBackColor = true;
+            this.chkForceFucking.CheckedChanged += new System.EventHandler(this.chkForceFucking_CheckedChanged);
             // 
             // chkInvincibility
             // 
@@ -292,7 +300,7 @@ namespace FallenAngelHandy
             this.DeviceSelector.Location = new System.Drawing.Point(11, 3);
             this.DeviceSelector.Name = "DeviceSelector";
             this.DeviceSelector.SelectedIndex = 0;
-            this.DeviceSelector.Size = new System.Drawing.Size(693, 120);
+            this.DeviceSelector.Size = new System.Drawing.Size(565, 120);
             this.DeviceSelector.TabIndex = 15;
             // 
             // Handy
@@ -305,7 +313,7 @@ namespace FallenAngelHandy
             this.Handy.Location = new System.Drawing.Point(4, 34);
             this.Handy.Name = "Handy";
             this.Handy.Padding = new System.Windows.Forms.Padding(3);
-            this.Handy.Size = new System.Drawing.Size(685, 82);
+            this.Handy.Size = new System.Drawing.Size(557, 82);
             this.Handy.TabIndex = 0;
             this.Handy.Text = "Handy";
             // 
@@ -360,7 +368,7 @@ namespace FallenAngelHandy
             this.Buttplug.Location = new System.Drawing.Point(4, 34);
             this.Buttplug.Name = "Buttplug";
             this.Buttplug.Padding = new System.Windows.Forms.Padding(3);
-            this.Buttplug.Size = new System.Drawing.Size(685, 82);
+            this.Buttplug.Size = new System.Drawing.Size(557, 82);
             this.Buttplug.TabIndex = 1;
             this.Buttplug.Text = "Buttplug.io";
             // 
@@ -404,11 +412,44 @@ namespace FallenAngelHandy
             this.lblUrl.TabIndex = 10;
             this.lblUrl.Text = "Web Socket URL";
             // 
+            // optInputKeyboard
+            // 
+            this.optInputKeyboard.AutoSize = true;
+            this.optInputKeyboard.Location = new System.Drawing.Point(230, 142);
+            this.optInputKeyboard.Name = "optInputKeyboard";
+            this.optInputKeyboard.Size = new System.Drawing.Size(107, 29);
+            this.optInputKeyboard.TabIndex = 16;
+            this.optInputKeyboard.Text = "Keyboad";
+            this.optInputKeyboard.UseVisualStyleBackColor = true;
+            this.optInputKeyboard.CheckedChanged += new System.EventHandler(this.radioButton1_CheckedChanged);
+            // 
+            // optInputJoystick
+            // 
+            this.optInputJoystick.AutoSize = true;
+            this.optInputJoystick.Checked = true;
+            this.optInputJoystick.Location = new System.Drawing.Point(131, 142);
+            this.optInputJoystick.Name = "optInputJoystick";
+            this.optInputJoystick.Size = new System.Drawing.Size(93, 29);
+            this.optInputJoystick.TabIndex = 17;
+            this.optInputJoystick.TabStop = true;
+            this.optInputJoystick.Text = "Joistick";
+            this.optInputJoystick.UseVisualStyleBackColor = true;
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(8, 144);
+            this.label4.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(116, 25);
+            this.label4.TabIndex = 18;
+            this.label4.Text = "Input Metod:";
+            // 
             // FrmGame
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 25F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(884, 406);
+            this.ClientSize = new System.Drawing.Size(754, 435);
             this.Controls.Add(this.DeviceSelector);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.txtLog);
@@ -451,7 +492,7 @@ namespace FallenAngelHandy
         public System.Windows.Forms.ComboBox cmbVibrator;
         private System.Windows.Forms.Button btnGenerateGallery;
         private System.Windows.Forms.GroupBox groupBox1;
-        private System.Windows.Forms.CheckBox checkBox2;
+        private System.Windows.Forms.CheckBox chkForceFucking;
         private System.Windows.Forms.CheckBox chkInvincibility;
         private System.Windows.Forms.TabControl DeviceSelector;
         private System.Windows.Forms.TabPage Handy;
@@ -464,6 +505,9 @@ namespace FallenAngelHandy
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label lblHandyStatus;
         private System.Windows.Forms.Label lblStatus;
+        private System.Windows.Forms.RadioButton optInputKeyboard;
+        private System.Windows.Forms.RadioButton optInputJoystick;
+        private System.Windows.Forms.Label label4;
     }
 }
 

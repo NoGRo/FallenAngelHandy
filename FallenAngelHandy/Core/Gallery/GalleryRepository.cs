@@ -66,8 +66,6 @@ namespace FallenAngelHandy.Core
                                             Assets = new Dictionary<string, FileInfo>(StringComparer.OrdinalIgnoreCase) { { file.Extension, file } }
                                         });
 
-
-
             }
         }
         public static List<string> GetNames()

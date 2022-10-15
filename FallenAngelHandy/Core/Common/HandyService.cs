@@ -111,6 +111,13 @@ namespace FallenAngelHandy
         public static async Task SendGallery(string GalleryName)
         {
             var gallery = GalleryRepository.GetIndex(GalleryName);
+            if (gallery == null) 
+            {
+                timerCmdEnd.Interval = 10;
+                timerCmdEnd.Start();
+                return;
+            }
+
             timerCmdEnd.Interval = gallery.Duration;
             timerCmdEnd.Start();
             await Seek(gallery.StartTime);

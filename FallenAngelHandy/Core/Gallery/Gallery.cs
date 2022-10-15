@@ -11,7 +11,7 @@ namespace FallenAngelHandy.Core
         public int StartTime { get; set; }
         public int EndTime { get; set; }
         public bool HasSpacer { get; set; }
-        public int Repeats { get; set; }
+        public bool Repeats { get; set; }
         
     }
 }

@@ -26,11 +26,13 @@ namespace FallenAngelHandy
 
         public string VibratorMode { get; set; } = "Speed";
 
+        public bool useJoystick { get; set; } = true;
+
         //Filler            
-        public int MinSpeed { get; set; } = 60;
-        public int MaxSpeed { get; set; } = 150;
-        public int MinLength { get; set; } = 70;
-        public int MaxLength { get; set; } = 90;
+        public int FillerMinSpeed { get; set; } = 60;
+        public int FillerMaxSpeed { get; set; } = 250;
+        public int FillerMinLength { get; set; } = 70;
+        public int FillerMaxLength { get; set; } = 90;
 
         public int MinDamage { get; set; } = 15;
         public int CriticalDamage { get; set; } = 70;
@@ -52,8 +54,8 @@ namespace FallenAngelHandy
         public bool SexScenes { get; set; } = true;
         public bool Filler { get; set; } = true;
 
-        public bool Invincibility { get; set; } = true;
-        public bool ForceFucking { get; set; } = true;
+        public bool Invincibility { get; set; } = false;
+        public bool ForceFucking { get; set; } = false;
 
         private static string path = userDataPath + "LauncherConfig.json";
 
@@ -78,15 +80,56 @@ namespace FallenAngelHandy
             File.WriteAllText(pathConfig, JsonSerializer.Serialize(Game.Config,new JsonSerializerOptions { WriteIndented = true}));
                 
             var pathMar = userDataPath + "controls.mar";
+            if (!File.Exists(pathMar))
+            {
+                if (!File.Exists("controls.mar"))
+                    return;
+
+                File.Copy("controls.mar", pathMar,true);
+            }
+
+
             string json = File.ReadAllText(pathMar);
             if(json.Substring(json.Length - 1, 1) == "\0")
                 json = json.Substring(0,json.Length - 1);
-            var controls = JsonSerializer.Deserialize<ControlsConfig>(json);
-                
-            controls.Root[0].invincibility = Game.Config.Invincibility ? 1.0 : 0.0;
-            controls.Root[0].force_fucking = Game.Config.ForceFucking ? 1.0 : 0.0;
+            var MarFile = JsonSerializer.Deserialize<ControlsConfig>(json);
 
-            File.WriteAllText(pathMar, JsonSerializer.Serialize(controls));
+            var controls = MarFile.Root[0];
+
+            controls.invincibility = Game.Config.Invincibility ? 1.0 : 0.0;
+            controls.force_fucking = Game.Config.ForceFucking ? 1.0 : 0.0;
+            controls.zoomdefault =  Game.Config.ForceFucking ? "Far (automatic)" :controls.zoomdefault;
+            if (Game.Config.useJoystick)
+            {
+                controls.control_zoomminus = 189;
+                controls.control_zoomplus =  187;
+                controls.control_pause =  27;
+                controls.control_attack =  88;
+                controls.control_interact =  66;
+                controls.control_jump =  65;
+                controls.control_run =  84;
+                controls.control_left = 37;
+                controls.control_right = 39;
+                controls.control_up = 38;
+                controls.control_down = 40;
+            }
+            else 
+            {
+                controls.control_zoomplus = 107;
+                controls.control_left = 37;
+                controls.control_attack = 83;
+                controls.control_pause = 27;
+                controls.control_interact = 68;
+                controls.control_jump = 32;
+                controls.control_run = 65;
+                controls.control_down = 40;
+                controls.control_zoomminus = 109;
+                controls.control_zoomreset = 106;
+                controls.control_right = 39;
+                controls.control_up = 38;
+            }
+
+            File.WriteAllText(pathMar, JsonSerializer.Serialize(MarFile));
         }
     }
 }

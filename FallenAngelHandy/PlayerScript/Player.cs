@@ -89,28 +89,28 @@ namespace FallenAngelHandy
 
         private static async void HandyService_QueueEnd(object sender, EventArgs e)
         {
-            {
-                if (!HandyService.isReady)
-                    return;
+            
+            if (!HandyService.isReady)
+                return;
 
-                switch (Mode)
-                {
-                    case PlayerModeEnum.Filler:
-                        await FillerScript.RePlay();
-                        break;
-                    case PlayerModeEnum.Attack:
-                        Mode = PlayerModeEnum.Filler;
-                        await FillerScript.Play();
-                        OnStatusChange("Filler");
-                        break;
-                    case PlayerModeEnum.Gallery:
-                        //GameEventHandler("GalleryStop");
-                        await GalleryScriptPlayer.RePlay();
-                        break;
-                    default:
-                        break;
-                }
+            switch (Mode)
+            {
+                case PlayerModeEnum.Filler:
+                    await FillerScript.RePlay();
+                    break;
+                case PlayerModeEnum.Attack:
+                    Mode = PlayerModeEnum.Filler;
+                    await FillerScript.Play();
+                    OnStatusChange("Filler");
+                    break;
+                case PlayerModeEnum.Gallery:
+                    //GameEventHandler("GalleryStop");
+                    await GalleryScriptPlayer.RePlay();
+                    break;
+                default:
+                    break;
             }
+            
         }
     }
 }

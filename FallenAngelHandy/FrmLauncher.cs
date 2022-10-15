@@ -13,6 +13,10 @@ using System.Timers;
 using Timer = System.Timers.Timer;
 using FallenAngelHandy.Core;
 using System.IO;
+using static System.Net.WebRequestMethods;
+using File = System.IO.File;
+using System.Text.Json;
+using System.Reflection;
 
 namespace FallenAngelHandy
 {
@@ -33,7 +37,6 @@ namespace FallenAngelHandy
             Config.Load();
             GameListener.Init();
             GalleryBuilder.Init();
-
             GameListener.GameEventArrive += GameListener_GameEventArrive;
 
             Player.Init();
@@ -65,6 +68,9 @@ namespace FallenAngelHandy
             chkSexScenes.Checked = Game.Config.SexScenes;
             chkAttack.Checked = Game.Config.Attacks;
             chkInvincibility.Checked = Game.Config.Invincibility;
+            chkForceFucking.Checked = Game.Config.ForceFucking;
+            optInputJoystick.Checked = Game.Config.useJoystick;
+            optInputKeyboard.Checked = !Game.Config.useJoystick;
             cmbScripts.Text = Game.Config.GalleryUseVariant;
             cmbVibrator.Text = Game.Config.VibratorMode;
             txtHandyKey.Text = Game.Config.HandyKey;
@@ -134,6 +140,51 @@ namespace FallenAngelHandy
         {
             string basepath = @"D:\Programacion\FallenAngelHandy\Fallen_Angel_eDIT\Gallery\";
 
+            Dictionary<string, List<string>> finalFiles = ReadBundles(basepath);
+            //PackBundle(basepath, finalFiles);
+            UnpackBundle("D:\\Programacion\\FallenAngelHandy\\Fallen_Angel_eDIT\\NewGalleries\\", finalFiles);
+
+            File.WriteAllText(
+                path: basepath + $"AAA_MasterCmds.txt",
+                contents:
+                string.Join("\r\n", finalFiles.Keys.Select(x => $"del AAA_{x}.mp4"))
+                + "\r\n" +
+                string.Join("\r\n", finalFiles.Keys.Select(x => $".\\ffmpeg.exe -f concat -i AAA_{x}.txt -c copy -bsf:a aac_adtstoasc AAA_{x}.mp4"))
+            );
+
+        }
+
+        private   void UnpackBundle(string basepath, Dictionary<string, List<string>> finalFiles)
+        {
+            foreach (var key in finalFiles.Keys)
+            {
+
+               var bundle = JsonSerializer.Deserialize<FunScriptFile>(File.ReadAllText(basepath + $"AAA_{key}.funscript"));
+
+
+
+
+                var index = 0;
+                foreach (var gal in finalFiles[key])
+                {
+
+                    var funScriptFile = new FunScriptFile();
+                    funScriptFile.actions = bundle.actions
+                                            .Where(x => x.at <= (14000 * (index + 1)) && x.at > 14000 * index)
+                                            .Select(x =>new FunScriptAction { 
+                                                pos = x.pos, 
+                                                at = x.at - (14000 * index)
+                                            }).ToList();
+                    funScriptFile.Save($"{basepath}/UnPack/{gal}.funscript");
+                    index++;
+                };
+                
+
+            }
+        }
+
+        private  Dictionary<string, List<string>> ReadBundles(string basepath)
+        {
             var lines = File.ReadAllText(basepath + "enemies.txt").Split("\r\n").Where(x => !string.IsNullOrWhiteSpace(x)).Select(x => x.Trim());
 
             var finalFiles = new Dictionary<string, List<string>>();
@@ -152,12 +203,19 @@ namespace FallenAngelHandy
                                         .Where(x => x.StartsWith(line)));
 
             }
+
+            return finalFiles;
+        }
+        private  void PackBundle(string basepath, Dictionary<string, List<string>> finalFiles)
+        {
             foreach (var key in finalFiles.Keys)
             {
                 File.WriteAllText(
                     path: basepath + $"AAA_{key}.txt",
                     contents: string.Join("\r\n", finalFiles[key].Select(x => $"file '{x}.mp4'"))
                     );
+
+
                 var sb = new ScriptBuilder();
                 foreach (var gal in finalFiles[key])
                 {
@@ -170,16 +228,8 @@ namespace FallenAngelHandy
                 };
                 new FunScriptFile(sb.Generate())
                     .Save(basepath + $"AAA_{key}.funscript");
-                
-            }
 
-            File.WriteAllText(
-                path: basepath + $"AAA_MasterCmds.txt",
-                contents:
-                string.Join("\r\n", finalFiles.Keys.Select(x => $"del AAA_{x}.mp4"))
-                + "\r\n"+
-                string.Join("\r\n", finalFiles.Keys.Select(x => $".\\ffmpeg.exe -f concat -i AAA_{x}.txt -c copy -bsf:a aac_adtstoasc AAA_{x}.mp4"))
-            );
+            }
         }
 
         private void cmbScripts_SelectedIndexChanged(object sender, EventArgs e)
@@ -201,6 +251,12 @@ namespace FallenAngelHandy
         private void txtHandyKey_TextChanged(object sender, EventArgs e)
         {
             Game.Config.HandyKey = txtHandyKey.Text;
+            Config.Save();
+        }
+
+        private void chkForceFucking_CheckedChanged(object sender, EventArgs e)
+        {
+            Game.Config.ForceFucking = chkForceFucking.Checked;
             Config.Save();
         }
         private void txtLog_TextChanged(object sender, EventArgs e)
@@ -236,6 +292,12 @@ namespace FallenAngelHandy
         private void btnConnect_Click_1(object sender, EventArgs e)
         {
 
+        }
+
+        private void radioButton1_CheckedChanged(object sender, EventArgs e)
+        {
+            Game.Config.useJoystick = optInputJoystick.Checked;
+            Config.Save();
         }
     }
 }

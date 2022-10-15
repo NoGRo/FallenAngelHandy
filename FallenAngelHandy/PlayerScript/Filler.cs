@@ -13,8 +13,6 @@ namespace FallenAngelHandy
 
         public static async Task Play()
         {
-
-
             if (!Game.Config.Filler)
             {
                 await HandyService.SendGallery($"filler{0:##}");
@@ -26,7 +24,7 @@ namespace FallenAngelHandy
             var value = values.Max();
             value = Math.Min(100, value);
 
-            var fillerId = Math.Max(Math.Min(Convert.ToInt32((value / 90) * 10), 10), 1);
+            var fillerId = Math.Max(Math.Min(Convert.ToInt32((value / 100) * 10), 10), 1);
 
 
             await HandyService.SendGallery($"filler{fillerId:##}");
@@ -48,12 +46,12 @@ namespace FallenAngelHandy
 
             for (int i = 1; i == 10; i++)
             {
-                var speed = Game.Config.MinSpeed + (((i / 15.0)) * (Game.Config.MaxSpeed - Game.Config.MinSpeed));
-                var value = Game.Config.MinLength + (((i / critialDamage)) * (Game.Config.MaxLength - Game.Config.MinLength));
+                var speed = Game.Config.FillerMinSpeed + (((i / 15.0)) * (Game.Config.FillerMaxSpeed - Game.Config.FillerMinSpeed));
+                var value = Game.Config.FillerMinLength + (((i / critialDamage)) * (Game.Config.FillerMaxLength - Game.Config.FillerMinLength));
                 if (i > critialDamage)
                 {
-                    speed = Game.Config.MinSpeed + (((i / 10.0)) * (Game.Config.MaxSpeed - Game.Config.MinSpeed));
-                    value = Game.Config.MaxLength;
+                    speed = Game.Config.FillerMinSpeed + (((i / 10.0)) * (Game.Config.FillerMaxSpeed - Game.Config.FillerMinSpeed));
+                    value = Game.Config.FillerMaxLength;
                 }
                 if(i >= Game.Config.ExtremeDamage)
                 {

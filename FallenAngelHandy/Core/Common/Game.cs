@@ -8,5 +8,6 @@ namespace FallenAngelHandy
     {
         public static Status Status { get; set; } = new Status();
         public static Config Config { get; set; } = new Config();
+        public static GamePad GamePad { get; set; } = new GamePad();
     }
 }

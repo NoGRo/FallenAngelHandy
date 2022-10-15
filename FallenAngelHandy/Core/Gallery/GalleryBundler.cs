@@ -3,6 +3,7 @@ using System.IO;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Windows.Devices.PointOfService;
 
 namespace FallenAngelHandy.Core
 {
@@ -17,7 +18,7 @@ namespace FallenAngelHandy.Core
         private ScriptBuilder sb = new ScriptBuilder();
        
 
-        public void Add(GalleryIndex gallery, int repeats, bool hasSpacer)
+        public void Add(GalleryIndex gallery, bool repeats, bool hasSpacer)
         {
 
 
@@ -28,22 +29,21 @@ namespace FallenAngelHandy.Core
             var Index = gallery;
 
             var spacerDuration = 5000;
-
+            var repearDuration = 10000;
 
             var startTime = sb.TotalTime;
+
             sb.addCommands(gallery.Commands);
 
-
-            for (int i = 0; i < Index.Repeats; i++)
-                sb.addCommands(gallery.Commands.Clone());
-
-
-            Index.StartTime = startTime;
             Index.Duration = sb.TotalTime - startTime;
+            Index.StartTime = startTime;
             Index.EndTime = sb.TotalTime;
 
+            //6 seconds repear in script bundle for loop msg delay
+            if (gallery.Repeats)
+                sb.addCommands(gallery.Commands.Clone().TrimGalleryTimeTo(6));
 
-            if (Index.HasSpacer) // extra, not in duration, no movement
+            if (Index.HasSpacer) // extra, no movement
                 sb.AddCommandMillis(spacerDuration, sb.lastValue);
 
             if(!Galleries.ContainsKey(Index.Name))

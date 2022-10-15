@@ -42,12 +42,12 @@ namespace FallenAngelHandy
 
         private static int Speed
             => Convert.ToInt32(
-                Game.Config.MinSpeed +
-                ((Game.Config.MaxSpeed - Game.Config.MinSpeed) * Math.Min(Game.Status.Pleasure / 90, 1)));
+                Game.Config.FillerMinSpeed +
+                ((Game.Config.FillerMaxSpeed - Game.Config.FillerMinSpeed) * Math.Min(Game.Status.Pleasure / 90, 1)));
         private static int Lenght
             => Convert.ToInt32(
-                Game.Config.MinLength +
-                ((Game.Config.MaxLength - Game.Config.MinLength) * Math.Min(Game.Status.Pain / 90, 1)));
+                Game.Config.FillerMinLength +
+                ((Game.Config.FillerMaxLength - Game.Config.FillerMinLength) * Math.Min(Game.Status.Pain / 90, 1)));
 
         private static int SegmentLenght
             => Convert.ToInt32(Lenght * 0.333);

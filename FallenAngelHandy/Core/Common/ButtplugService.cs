@@ -157,14 +157,15 @@ namespace FallenAngelHandy
 
 
 
-        public static bool Invert { get; set; }
-        public static DateTime SyncSend { get; set; }
+        
+        private static DateTime SyncSend { get; set; }
 
         private static Timer timerCmdEnd = new Timer();
 
         private static List<CmdLinear> queue { get; set; } = new List<CmdLinear>();
         private static CmdLinear LastCommandSent { get; set; }
 
+        public static bool Invert { get; set; }
         public static byte GetCurrentValue()
         {
             if (LastCommandSent?.Sent == null)

@@ -16,7 +16,6 @@ namespace FallenAngelHandy
         public int range { get; set; }
         public List<FunScriptAction> actions { get; set; }
 
-
         public FunScriptFile()
         {
             inverted = false;

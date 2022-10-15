@@ -31,18 +31,18 @@ namespace FallenAngelHandy
             {
                 var gallery = GalleryRepository.GetIndex(name);
                 gallery.Commands = gallery.Commands.TrimGalleryTimeTo(14);
-                bundler.Add(gallery,1,true);
+                bundler.Add(gallery,true,true);
             }
 
-            bundler.Add(GalleryRepository.GetIndex("stun"), 0 ,true);
+            bundler.Add(GalleryRepository.GetIndex("stun"), false ,true);
         }
 
         public static void GenerateFillers()
         {
             for (int i = 0; i < 10; i++)
             {
-                var speed = Convert.ToInt32(Game.Config.MinSpeed + ((i / 10.0) * (Game.Config.MaxSpeed - Game.Config.MinSpeed)));
-                var value = Convert.ToInt32(Game.Config.MinLength + ((i / 10.0) * (Game.Config.MaxLength - Game.Config.MinLength)));
+                var speed = Convert.ToInt32(Game.Config.FillerMinSpeed + ((i / 10.0) * (Game.Config.FillerMaxSpeed - Game.Config.FillerMinSpeed)));
+                var value = Convert.ToInt32(Game.Config.FillerMinLength + ((i / 10.0) * (Game.Config.FillerMaxLength - Game.Config.FillerMinLength)));
 
                 while (scriptBuilder.TotalTime < 30000) 
                 { 
@@ -51,7 +51,7 @@ namespace FallenAngelHandy
                 }
 
                 var gallery = new GalleryIndex { Name = $"filler{i+1:##}", Commands = scriptBuilder.Generate()};
-                bundler.Add(gallery,0,false);
+                bundler.Add(gallery,true,false);
             }
         }
     }
