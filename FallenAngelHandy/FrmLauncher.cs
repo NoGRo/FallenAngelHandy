@@ -17,6 +17,9 @@ using static System.Net.WebRequestMethods;
 using File = System.IO.File;
 using System.Text.Json;
 using System.Reflection;
+using System.Runtime.CompilerServices;
+using CsvHelper;
+using System.Globalization;
 
 namespace FallenAngelHandy
 {
@@ -142,7 +145,8 @@ namespace FallenAngelHandy
 
             Dictionary<string, List<string>> finalFiles = ReadBundles(basepath);
             //PackBundle(basepath, finalFiles);
-            UnpackBundle("D:\\Programacion\\FallenAngelHandy\\Fallen_Angel_eDIT\\NewGalleries\\", finalFiles);
+            // UnpackBundle("D:\\Programacion\\FallenAngelHandy\\Fallen_Angel_eDIT\\NewGalleries\\", finalFiles);
+            WriteCsvDefinition("D:\\Programacion\\FallenAngelHandy\\Fallen_Angel_eDIT\\NewGalleries\\", finalFiles);
 
             File.WriteAllText(
                 path: basepath + $"AAA_MasterCmds.txt",
@@ -153,7 +157,34 @@ namespace FallenAngelHandy
             );
 
         }
+        private void WriteCsvDefinition(string basepath, Dictionary<string, List<string>> finalFiles) 
+        {
+            var definitions = new List<GalleryDefinition>();
+            foreach (var key in finalFiles.Keys)
+            {
+                var bundle = JsonSerializer.Deserialize<FunScriptFile>(File.ReadAllText(basepath + $"AAA_{key}.funscript"));
 
+                var index = 0;
+                
+                foreach (var gal in finalFiles[key])
+                {
+                    definitions.Add(new GalleryDefinition
+                    {
+                        StartTime= 14000 * index,
+                        EndTime = 14000 * (index + 1) ,
+                        FileName = key,
+                        Name = gal,
+                        Loop = true
+                    });  
+                    index++;
+                };
+            }
+            using (var writer = new StreamWriter(@$"{basepath}\Definitions.csv"))
+            {
+                var csv = new CsvWriter(writer, CultureInfo.InvariantCulture);
+                csv.WriteRecords(definitions); // where values implements IEnumerable
+            }
+        }
         private   void UnpackBundle(string basepath, Dictionary<string, List<string>> finalFiles)
         {
             foreach (var key in finalFiles.Keys)
@@ -167,7 +198,6 @@ namespace FallenAngelHandy
                 var index = 0;
                 foreach (var gal in finalFiles[key])
                 {
-
                     var funScriptFile = new FunScriptFile();
                     funScriptFile.actions = bundle.actions
                                             .Where(x => x.at <= (14000 * (index + 1)) && x.at > 14000 * index)
