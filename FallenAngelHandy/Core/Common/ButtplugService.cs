@@ -8,12 +8,16 @@ using System.Threading.Tasks;
 using System.Timers;
 using static Buttplug.ServerMessage.Types;
 using FallenAngelHandy.Core;
+using System.Diagnostics;
+using System.Runtime.CompilerServices;
+using Google.Protobuf.WellKnownTypes;
 
 namespace FallenAngelHandy
 {
     public static class ButtplugService
     {
         private static Timer timerReconnect = new Timer(20000);
+        private static Timer vibCommandTimer = new Timer(30);
         public static ButtplugClient client { get; set; }
         public static ButtplugClientDevice device { get; set; }
 
@@ -25,6 +29,7 @@ namespace FallenAngelHandy
         {
             timerReconnect.Elapsed += timerReconnectevent;
             timerCmdEnd.Elapsed += OnCommandEnd;
+            vibCommandTimer.Elapsed += FadeVibratorCmd;
             await Connect();
         }
         public static event EventHandler<CmdLinear> CommandEnd;
@@ -86,7 +91,8 @@ namespace FallenAngelHandy
         private static void AddDevice(ButtplugClientDevice Device)
         {
             if (Device.AllowedMessages.ContainsKey(MessageAttributeType.LinearCmd)
-                || Device.AllowedMessages.ContainsKey(MessageAttributeType.VibrateCmd))
+                || Device.AllowedMessages.ContainsKey(MessageAttributeType.VibrateCmd)
+                && !Device.Name.Contains("XBOX",StringComparison.InvariantCultureIgnoreCase))
             {
                 
                 device = Device;
@@ -97,6 +103,7 @@ namespace FallenAngelHandy
 
 
                 OnStatusChange($"Device Found [{Device.Name}]");
+                QueueEnd?.Invoke(null, null);
             }
             else if (device == null)
             {
@@ -183,7 +190,7 @@ namespace FallenAngelHandy
                 return result;
             }
         }
-
+         
         public static async Task StopClear()
         {
             await Stop();
@@ -204,7 +211,15 @@ namespace FallenAngelHandy
 
         public static async Task SendGallery(string GalleryName)
         {
-            await SendCmd(GalleryRepository.Get(GalleryName)?.Commands);
+            var commands = GalleryRepository.Get(GalleryName)?.Commands;
+            
+            if (commands == null)
+            {
+                Debug.Write($"Not Gallery Found: {GalleryName} ");
+                commands = GalleryRepository.Get("masturbate_1")?.Commands;
+            }
+            Debug.Write($"SendGallery: {GalleryName}");
+            await SendCmd(commands);
         }
         public static async Task SendCmd(List<CmdLinear> cmds)
         {
@@ -217,10 +232,14 @@ namespace FallenAngelHandy
 
         public static async Task InsertCmd(List<CmdLinear> cmds)
         {
-            var passes = DateTime.Now - LastCommandSent.Sent.Value;
-            LastCommandSent.Millis -= passes.Milliseconds;
+            if (LastCommandSent != null)
+            {
+                var passes = DateTime.Now - LastCommandSent.Sent.Value;
+                LastCommandSent.Millis -= passes.Milliseconds;
+                cmds.Add(LastCommandSent);
+            }
 
-            cmds.Add(LastCommandSent);
+
             queue.InsertRange(0, cmds);
 
             SyncSend = DateTime.Now;
@@ -232,7 +251,8 @@ namespace FallenAngelHandy
         }
         private static Task sendtask;
         public static async Task SendCmd(CmdLinear cmd)
-        {            
+        {
+            vibCommandTimer.Stop();
             if (!isReady) 
                 return;
 
@@ -247,7 +267,9 @@ namespace FallenAngelHandy
             }
             else if (device.AllowedMessages.ContainsKey(MessageAttributeType.VibrateCmd))
             {
-                sendtask = device.SendVibrateCmd(cmd.VibrateValue);
+                vibCommandTimer.Start();
+
+                //Debug.WriteLine("vibro: " + cmd.VibrateValue);
             }
 
             cmd.Sent = DateTime.Now;
@@ -257,22 +279,29 @@ namespace FallenAngelHandy
                         ? cmd.AbsoluteTime - CurrentTime
                         : cmd.Millis;
 
-            
 
-            if (time < 0)
-                await Seek();
-            else
-            {
-                timerCmdEnd.Stop();
-                timerCmdEnd.Interval = time == 0 ? 1 : time;
-                timerCmdEnd.Start();
-            }
-            
 
-            await sendtask;
+            if (time <= 0)
+                time = 1;
+            
+            timerCmdEnd.Stop();
+            timerCmdEnd.Interval = time;
+            timerCmdEnd.Start();
+            
+            
+            if(sendtask != null) 
+               await sendtask;
         }
 
-
+        private static async void FadeVibratorCmd(object sender, ElapsedEventArgs e)
+        {
+            double Speed = (LastCommandSent?.Ended != true)
+                                ? Math.Min(1.0, Math.Max(0, GetCurrentValue() / (double)100))
+                                : 0;
+                
+            await device.SendVibrateCmd(Speed);
+            //Debug.WriteLine("vibro: " + Speed);
+        }
         private static async Task Seek()
         {
             var next = queue.FirstOrDefault(x => x.AbsoluteTime >= CurrentTime);
