@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Collections.Generic;
 using System.Text;
+using System.Diagnostics;
 
 namespace FallenAngelHandy
 {
@@ -41,7 +42,7 @@ namespace FallenAngelHandy
             };
         }
 
-
+        
         public int Millis { get; set; }
         public int Speed { get; set; } //TODO calculate Speed
 
@@ -50,16 +51,14 @@ namespace FallenAngelHandy
         public byte InitialValue { get; set; }
         
         public double LinearValue => Math.Min(1.0, Math.Max(0, Value / (double)100));
-        public double VibrateValue => 
-            Game.Config.VibratorMode == "Speed" 
-                ? Math.Min(1.0, Math.Max(0, Speed / (double)SpeedLimit))
-                : Math.Min(1.0, Math.Max(0, Value / (double)75));
 
         public uint ButtplugMillis => (uint)Millis;
 
 
         public DateTime? Sent { get; set; }
         public DateTime? Stoped { get; set; }
+
+        public bool Ended => (Sent?.AddMilliseconds(Millis + 50) ?? DateTime.Now) <= DateTime.Now;
         public int AbsoluteTime { get; internal set; }
     }
 

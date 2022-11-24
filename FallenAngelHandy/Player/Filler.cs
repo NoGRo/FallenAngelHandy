@@ -9,102 +9,28 @@ namespace FallenAngelHandy
 {
     public static class Filler
     {
-
         private static ScriptBuilder SB =  new ScriptBuilder();
-
-
 
         public static async Task Play()
         {
+            if (!Game.Config.Filler)
+            {
+                await ButtplugService.SendGallery($"filler{0:##}");
+                return;
+            }
 
+            var values = new List<double> { Game.Status.Pleasure, Game.Status.Pain, Game.Status.Penis, Game.Status.Vagina, Game.Status.Breasts, Game.Status.Head, Game.Status.Anus, 1.0 };
+            var value = values.Max();
+            value = Math.Min(100, value);
 
-            SB.Clear();
-            GoHome();
-            addDelay();
+            var fillerId = Math.Max(Math.Min(Convert.ToInt32((value / 100) * 10), 10), 1);
 
-            if (Game.Config.Filler)
-                GenerateSicle();
-
-            await ButtplugService.SendCmd(SB.Generate());
+            await ButtplugService.SendGallery($"filler{fillerId:##}");
         }
 
         public static async Task RePlay()
         {
-            if (!Game.Config.Filler)
-                return;
-
-            SB.Clear();
-            GenerateSicle();
-
-            await ButtplugService.SendCmd(SB.Generate());
-        }
-
-
-        private static int Speed
-            => Convert.ToInt32(
-                Game.Config.FillerMinSpeed +
-                ((Game.Config.FillerMaxSpeed - Game.Config.FillerMinSpeed) * Math.Min(Game.Status.Pleasure / 90, 1)));
-        private static int Lenght
-            => Convert.ToInt32(
-                Game.Config.FillerMinLength +
-                ((Game.Config.FillerMaxLength - Game.Config.FillerMinLength) * Math.Min(Game.Status.Pain / 90, 1)));
-
-        private static int SegmentLenght
-            => Convert.ToInt32(Lenght * 0.333);
-
-        private static void GenerateSicle()
-        {
-            //Up
-            SB.AddCommandSpeed(Speed, SegmentLenght);
-            AddPartEffect(Game.Status.Anus, true);
-            SB.AddCommandSpeed(Speed, SegmentLenght * 2);
-            AddPartEffect(Game.Status.Vagina, true);
-            SB.AddCommandSpeed(Speed, Lenght);
-            AddPartEffect(Game.Status.Penis, true);
-
-            //Down
-            SB.AddCommandSpeed(Speed, SegmentLenght * 2);
-            AddPartEffect(Game.Status.Breasts, false);
-            SB.AddCommandSpeed(Speed, SegmentLenght);
-            AddPartEffect(Game.Status.Head, false);
-            SB.AddCommandSpeed(Speed, 0);
-
-            SB.MergeCommands();
-
-        }
-
-        private static void GoHome()
-        {
-            if (ButtplugService.GetCurrentValue() != 0)
-                SB.AddCommandSpeed(Speed, 0);
-        }
-        private static void addDelay()
-        {
-            if(Game.Config.Delay != 0 )
-                SB.AddCommandMillis(Game.Config.Delay, 1);
-        }
-
-        private static void AddPartEffect(double damage, bool direction)
-        {
-            int initial = SB.lastValue;
-
-            if (damage <= Game.Config.MinDamage)
-                return;
-
-            if (damage <= Game.Config.CriticalDamage)
-            {
-                SB.AddCommandMillis(Convert.ToInt32(300 * (damage / Game.Config.CriticalDamage)), initial);
-            }
-            else
-            {
-                var critical = (damage - Game.Config.CriticalDamage) / ((double)100 - Game.Config.CriticalDamage);
-                var strokeLength = Convert.ToInt32((SegmentLenght *0.5) + (SegmentLenght * 0.4 * critical));
-
-                var strokeSpeed = Game.Config.CriticalSpeed;
-
-                SB.AddCommandSpeed(strokeSpeed, direction ? initial - strokeLength : initial + strokeLength);
-                SB.AddCommandSpeed(strokeSpeed, initial);
-            }
+            await Play();
         }
     }
 }

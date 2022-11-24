@@ -17,7 +17,7 @@ namespace FallenAngelHandy
                 || gallery == galleryName)
                 return;
 
-
+            gallery = galleryName;
             await ButtplugService.SendGallery(galleryName);
         }
         public static async Task RePlay()

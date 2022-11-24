@@ -53,14 +53,7 @@ namespace FallenAngelHandy
             loadForm();
         }
 
-        private void HandyService_StatusChange(object sender, string e)
-        {
-            Invoke(new MethodInvoker(() =>
-            {
-                lblHandyStatus.Text = $"Status: {e}";
-                btnLaunch.Enabled = HandyService.isReady;
-            }));
-        }
+
 
         private void loadForm()
         {
@@ -87,6 +80,19 @@ namespace FallenAngelHandy
             {
                 lblStatus.Text = $"Status: {e}";
                 btnLaunch.Enabled = ButtplugService.isReady;
+                if (ButtplugService.isReady && e.Contains("Device Found"))
+                    DeviceSelector.SelectedTab = DeviceSelector.TabPages[1];
+            }));
+        }
+
+        private void HandyService_StatusChange(object sender, string e)
+        {
+            Invoke(new MethodInvoker(() =>
+            {
+                lblHandyStatus.Text = $"Status: {e}";
+                btnLaunch.Enabled = HandyService.isReady;
+                if (HandyService.isReady && e.Contains("Uploading"))
+                    DeviceSelector.SelectedTab = DeviceSelector.TabPages[0];
             }));
         }
 
@@ -291,7 +297,7 @@ namespace FallenAngelHandy
 
         private void btnConnect_Click_1(object sender, EventArgs e)
         {
-
+            ButtplugService.Connect();
         }
 
         private void radioButton1_CheckedChanged(object sender, EventArgs e)

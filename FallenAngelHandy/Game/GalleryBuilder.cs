@@ -29,12 +29,12 @@ namespace FallenAngelHandy
 
             foreach (var name in names)
             {
-                var gallery = GalleryRepository.GetIndex(name);
+                var gallery = GalleryRepository.Get(name);
                 gallery.Commands = gallery.Commands.TrimGalleryTimeTo(14);
                 bundler.Add(gallery,true,true);
             }
 
-            bundler.Add(GalleryRepository.GetIndex("stun"), false ,true);
+            bundler.Add(GalleryRepository.Get("stun"), false ,true);
         }
 
         public static void GenerateFillers()

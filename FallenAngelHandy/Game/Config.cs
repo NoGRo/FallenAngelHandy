@@ -22,7 +22,7 @@ namespace FallenAngelHandy
         public readonly string UserDataPath = userDataPath;
         private static string userDataPath = $"{Environment.GetEnvironmentVariable("LocalAppData")}\\Fallen_Angel\\";
 
-        public string GalleryUseVariant { get; set; } = null;
+        public string GalleryUseVariant { get; set; } = "Detailed";
 
         public string VibratorMode { get; set; } = "Speed";
 

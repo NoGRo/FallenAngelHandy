@@ -211,15 +211,25 @@ namespace FallenAngelHandy
 
         public static async Task SendGallery(string GalleryName)
         {
-            var commands = GalleryRepository.Get(GalleryName)?.Commands;
-            
-            if (commands == null)
+            Gallery gallery = null; 
+
+            if (device.AllowedMessages.ContainsKey(MessageAttributeType.LinearCmd))
+            {
+                gallery = GalleryRepository.Get(GalleryName);
+            }
+            else if (device.AllowedMessages.ContainsKey(MessageAttributeType.VibrateCmd))
+            {
+                gallery = GalleryRepository.Get(GalleryName,"vibrator");
+            }
+
+            if (gallery == null)
             {
                 Debug.Write($"Not Gallery Found: {GalleryName} ");
-                commands = GalleryRepository.Get("masturbate_1")?.Commands;
+                gallery = GalleryRepository.Get("masturbate_1");
             }
+
             Debug.Write($"SendGallery: {GalleryName}");
-            await SendCmd(commands);
+            await SendCmd(gallery.Commands);
         }
         public static async Task SendCmd(List<CmdLinear> cmds)
         {

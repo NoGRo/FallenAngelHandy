@@ -26,9 +26,7 @@ namespace FallenAngelHandy
 
             var fillerId = Math.Max(Math.Min(Convert.ToInt32((value / 100) * 10), 10), 1);
 
-
             await HandyService.SendGallery($"filler{fillerId:##}");
-
         }
 
         public static Dictionary<string,List<CmdLinear>> GenerateFillers()
