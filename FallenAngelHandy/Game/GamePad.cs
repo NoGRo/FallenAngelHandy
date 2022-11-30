@@ -89,7 +89,7 @@ namespace FallenAngelHandy
 
 
             previousState = state;
-            Debug.WriteLine(state.Gamepad.Buttons);
+            //Debug.WriteLine(state.Gamepad.Buttons);
 
             bool skipArrows = 
                    state.Gamepad.LeftThumbX is > ThumbTolerance or < -ThumbTolerance
@@ -146,7 +146,7 @@ namespace FallenAngelHandy
 
             foreach (Process proc in processes)
                 PostMessage(proc.MainWindowHandle, WM_KEYUP, keyboardKey, 0);
-            Debug.WriteLine($"key Up   {keyboardKey}");
+            //Debug.WriteLine($"key Up   {keyboardKey}");
             KeyState[keyboardKey] = false;
         }
 
@@ -158,7 +158,7 @@ namespace FallenAngelHandy
 
             foreach (Process proc in processes)
                 PostMessage(proc.MainWindowHandle, WM_KEYDOWN, keyboardKey, 0);
-            Debug.WriteLine($"key Down {keyboardKey}");
+            //Debug.WriteLine($"key Down {keyboardKey}");
 
             KeyState[keyboardKey] = true;
             //throw new NotImplementedException();
