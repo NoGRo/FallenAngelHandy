@@ -123,11 +123,6 @@ namespace FallenAngelHandy
                 timer.Dispose();
             }, null, 6000, Timeout.Infinite);
         }
-
-
-
-
- 
     }
 }
 

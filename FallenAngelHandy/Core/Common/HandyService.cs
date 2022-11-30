@@ -11,6 +11,7 @@ using FallenAngelHandy.Core;
 using System.IO;
 using System.Net.Http;
 using Newtonsoft.Json;
+using System.Diagnostics;
 
 namespace FallenAngelHandy
 {
@@ -111,11 +112,10 @@ namespace FallenAngelHandy
         public static async Task SendGallery(string GalleryName)
         {
             var gallery = GalleryRepository.Get(GalleryName);
-            if (gallery == null) 
+            if (gallery == null)
             {
-                timerCmdEnd.Interval = 10;
-                timerCmdEnd.Start();
-                return;
+                Debug.Write($"Not Gallery Found: {GalleryName} ");
+                gallery = GalleryRepository.Get("masturbate_1");
             }
 
             timerCmdEnd.Interval = gallery.Duration;

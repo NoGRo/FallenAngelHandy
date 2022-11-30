@@ -53,7 +53,7 @@ namespace FallenAngelHandy
 
             if(ButtplugService.isReady)
                 Player.GameEventHandler(report, request.QueryString ??  new NameValueCollection());
-            else if(HandyService.isReady)
+            if(HandyService.isReady)
                 PlayerScript.GameEventHandler(report, request.QueryString ?? new NameValueCollection());
 
         }

@@ -39,7 +39,8 @@ namespace FallenAngelHandy
         {
             Config.Load();
             GameListener.Init();
-            GalleryBuilder.Init();
+            //GalleryBuilder.Init();
+            GalleryRepository.LoadGalleryFromFolder();
             GameListener.GameEventArrive += GameListener_GameEventArrive;
 
             Player.Init();
@@ -68,7 +69,6 @@ namespace FallenAngelHandy
             optInputJoystick.Checked = Game.Config.useJoystick;
             optInputKeyboard.Checked = !Game.Config.useJoystick;
             cmbScripts.Text = Game.Config.GalleryUseVariant;
-            cmbVibrator.Text = Game.Config.VibratorMode;
             txtHandyKey.Text = Game.Config.HandyKey;
             
         }
@@ -101,10 +101,7 @@ namespace FallenAngelHandy
 
         private void Player_StatusChange(object sender, string e)
         {
-            Invoke(new MethodInvoker(() =>
-            {
-                lblGameStatus.Text = e;
-            }));
+
         }
 
         private void btnSimulate_Click(object sender, EventArgs e)
@@ -152,7 +149,7 @@ namespace FallenAngelHandy
             Dictionary<string, List<string>> finalFiles = ReadBundles(basepath);
             //PackBundle(basepath, finalFiles);
             // UnpackBundle("D:\\Programacion\\FallenAngelHandy\\Fallen_Angel_eDIT\\NewGalleries\\", finalFiles);
-            WriteCsvDefinition("D:\\Programacion\\FallenAngelHandy\\Fallen_Angel_eDIT\\NewGalleries\\", finalFiles);
+            //WriteCsvDefinition("D:\\Programacion\\FallenAngelHandy\\Fallen_Angel_eDIT\\NewGalleries\\", finalFiles);
 
             File.WriteAllText(
                 path: basepath + $"AAA_MasterCmds.txt",
@@ -273,11 +270,7 @@ namespace FallenAngelHandy
             Game.Config.GalleryUseVariant = cmbScripts.Text;
             Config.Save();
         }
-        private void cmbVibrator_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            Game.Config.VibratorMode = cmbVibrator.Text;
-            Config.Save();
-        }
+
         private void chkInvincibility_CheckedChanged(object sender, EventArgs e)
         {
             Game.Config.Invincibility = chkInvincibility.Checked;

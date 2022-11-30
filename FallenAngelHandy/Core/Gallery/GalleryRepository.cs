@@ -13,6 +13,7 @@ using CsvHelper;
 using static System.Net.WebRequestMethods;
 using File = System.IO.File;
 using SharpDX.Win32;
+using System.Xml.Linq;
 
 namespace FallenAngelHandy.Core
 {
@@ -25,15 +26,15 @@ namespace FallenAngelHandy.Core
 
         public static string CurrentVariant { get; set; }
         public static void LoadGalleryFromFolder()
-        {       
-            GalleryFromFolder();
+        {
+            LoadGalleryFromCsv();
         }
         private static void GalleryFromFolder()
         {
             var variants = Directory.GetDirectories($"{Game.Config.GalleryPath}\\");
             foreach (var variant in variants)
             {
-                var GalleryPath = $"{Game.Config.GalleryPath}\\" + (!string.IsNullOrEmpty(variant) ? variant + "\\" : "");
+                var GalleryPath = $"{Game.Config.GalleryPath}\\{variant}\\";
 
                 if (!Directory.Exists($"{GalleryPath}"))
                     return;
@@ -72,19 +73,20 @@ namespace FallenAngelHandy.Core
                         Assets = new Dictionary<string, FileInfo>(StringComparer.OrdinalIgnoreCase) { { file.Extension, file } }
                     });
 
+                }
             }
         }
 
-        private static void LoadGalleryFromCsv(string variantCode)
+        private static void LoadGalleryFromCsv()
         {
 
-            var GalleryPath = $"{Game.Config.GalleryPath}\\" + (!string.IsNullOrEmpty(variantCode) ? variantCode + "\\" : "");
+            var GalleryPath = $"{Game.Config.GalleryPath}\\";
 
             if (!Directory.Exists($"{GalleryPath}"))
                 return;
 
 
-            using (var reader = File.OpenText(@".\GalleryDefinition.csv"))
+            using (var reader = File.OpenText($"{GalleryPath}Definitions.csv"))
             using (var csv = new CsvReader(reader, CultureInfo.InvariantCulture))
             {
                 Definitions = csv.GetRecords<GalleryDefinition>().ToList();
@@ -93,51 +95,60 @@ namespace FallenAngelHandy.Core
             var bundler = new GalleryBundler();
             var FunscriptCache = new Dictionary<string, FunScriptFile>(StringComparer.OrdinalIgnoreCase);
 
-            foreach (var galleryDefinition in Definitions)
+            var variants = Directory.GetDirectories($"{GalleryPath}");
+            foreach (var variantPath in variants)
             {
-                var filePath = $"{GalleryPath}\\{galleryDefinition.FileName}.funscript";
-                FunScriptFile funscript = null;
-                if (!FunscriptCache.ContainsKey(filePath))
+                var variant = new DirectoryInfo(variantPath).Name;
+                foreach (var galleryDefinition in Definitions)
                 {
-                    try
+                    var filePath = $"{GalleryPath}\\{variant}\\{galleryDefinition.FileName}.funscript";
+                    FunScriptFile funscript = null;
+                    if (!FunscriptCache.ContainsKey(filePath))
                     {
-                        funscript = JsonSerializer.Deserialize<FunScriptFile>(File.ReadAllText(filePath));
-                        funscript.actions = funscript.actions.OrderBy(x => x.at).ToList();
+                        try
+                        {
+                            funscript = JsonSerializer.Deserialize<FunScriptFile>(File.ReadAllText(filePath));
+                            funscript.actions = funscript.actions.OrderBy(x => x.at).ToList();
+                        }
+                        catch
+                        {
+                            continue;
+                        }
+                        FunscriptCache.Add(filePath, funscript);
                     }
-                    catch
+                    funscript = FunscriptCache[filePath];
+
+
+                    var actions = funscript.actions
+                        .Where(x => x.at > galleryDefinition.StartTime
+                                 && x.at <= galleryDefinition.EndTime);
+
+                    var sb = new ScriptBuilder();
+
+                    foreach (var action in actions)
                     {
-                        continue;
-                    } 
-                    FunscriptCache.Add(filePath, funscript);
+
+                        sb.AddCommandMillis(Convert.ToInt32(action.at - galleryDefinition.StartTime - sb.TotalTime), action.pos);
+                    }
+
+                    var gallery = new GalleryIndex
+                    {
+                        Name = galleryDefinition.Name,
+                        Variant = variant,
+                        Duration = Convert.ToInt32(galleryDefinition.EndTime - galleryDefinition.StartTime)
+                    };
+                    gallery.Commands = sb.Generate().TrimGalleryTimeTo(gallery.Duration);
+
+
+                    if (!Galleries.ContainsKey(galleryDefinition.Name))
+                        Galleries.Add(galleryDefinition.Name, new List<GalleryIndex>());
+
+                    bundler.Add(gallery, galleryDefinition.Loop, true);
+                    Galleries[gallery.Name].Add(gallery);
                 }
-                funscript = FunscriptCache[filePath];
 
-
-                var gallery = new GalleryIndex
-                {
-                    Name = galleryDefinition.Name,
-                    Duration = Convert.ToInt32(galleryDefinition.EndTime - galleryDefinition.StartTime)
-                };
-
-                var actions = funscript.actions
-                    .Where(x => x.at > galleryDefinition.StartTime 
-                             && x.at <= galleryDefinition.EndTime);
-
-                var sb = new ScriptBuilder();
-
-                foreach (var action in actions)
-                {
-                    sb.AddCommandMillis(Convert.ToInt32(action.at - sb.TotalTime), action.pos);
-                }
-                gallery.Commands = sb.Generate().TrimGalleryTimeTo(gallery.Duration);
-
-                if (Galleries.ContainsKey(galleryDefinition.Name))
-                    Galleries.Remove(galleryDefinition.Name);
-
-                bundler.Add(gallery, galleryDefinition.Loop, true);
-                Galleries.Add(gallery.Name, gallery);
+               
             }
-
             Assets = bundler.GenerateBundle();
         }
 
@@ -146,10 +157,16 @@ namespace FallenAngelHandy.Core
 
         public static GalleryIndex Get(string name, string variant = null)
         {
-            variant = variant ?? CurrentVariant;
-            var gallery = Galleries.GetValueOrDefault(name).FirstOrDefault(x => x.Variant == variant)
-                        ?? Galleries.GetValueOrDefault(name).FirstOrDefault(x => x.Variant == CurrentVariant)
-                        ?? Galleries.GetValueOrDefault(name).FirstOrDefault();
+            variant = variant ?? CurrentVariant ??  Game.Config.GalleryUseVariant;
+
+            var variants = Galleries.GetValueOrDefault(name);
+
+            if (variant is null)
+                return null;
+
+            var gallery = variants.FirstOrDefault(x => x.Variant == variant)
+                        ?? variants.FirstOrDefault(x => x.Variant == CurrentVariant)
+                        ?? variants.FirstOrDefault();
             return gallery;
             
         }
@@ -161,18 +178,18 @@ namespace FallenAngelHandy.Core
             if (!gallery.Any())
                 return gallery;
 
-            var maxMillis = maxTime * 1000;
+
 
             gallery.AddAbsoluteTime();
 
-            var final = gallery.Where(x => x.AbsoluteTime <= maxMillis);
+            var final = gallery.Where(x => x.AbsoluteTime <= maxTime);
 
             if (!final.Any())
                 return final.ToList();
 
             var last = final.Last();
-            if (last.AbsoluteTime != maxMillis)
-                last.Millis += maxMillis - last.AbsoluteTime;
+            if (last.AbsoluteTime != maxTime)
+                last.Millis += maxTime - last.AbsoluteTime;
 
             return final.ToList();
         }

@@ -11,6 +11,7 @@ using FallenAngelHandy.Core;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using Google.Protobuf.WellKnownTypes;
+using Windows.Media.Protection.PlayReady;
 
 namespace FallenAngelHandy
 {
@@ -221,7 +222,6 @@ namespace FallenAngelHandy
             {
                 gallery = GalleryRepository.Get(GalleryName,"vibrator");
             }
-
             if (gallery == null)
             {
                 Debug.Write($"Not Gallery Found: {GalleryName} ");
@@ -308,7 +308,12 @@ namespace FallenAngelHandy
             double Speed = (LastCommandSent?.Ended != true)
                                 ? Math.Min(1.0, Math.Max(0, GetCurrentValue() / (double)100))
                                 : 0;
-                
+            if (device == null || !isReady)
+            {
+                vibCommandTimer.Stop();
+                return;
+            }
+
             await device.SendVibrateCmd(Speed);
             //Debug.WriteLine("vibro: " + Speed);
         }
@@ -335,7 +340,7 @@ namespace FallenAngelHandy
         private static async void OnCommandEnd(object sender, ElapsedEventArgs e)
         {
             timerCmdEnd.Stop();
-            if (queue.Any()) 
+            if (queue?.Any() == true) 
             {
                 var cmd = queue.First();
                 queue.RemoveAt(0);
@@ -354,8 +359,5 @@ namespace FallenAngelHandy
             LastCommandSent.Stoped = DateTime.Now;
             await device.SendStopDeviceCmd();
         }
-
-
-
     }
 }

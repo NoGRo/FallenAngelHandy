@@ -22,24 +22,10 @@ namespace FallenAngelHandy
         public readonly string UserDataPath = userDataPath;
         private static string userDataPath = $"{Environment.GetEnvironmentVariable("LocalAppData")}\\Fallen_Angel\\";
 
-        public string GalleryUseVariant { get; set; } = "Detailed";
+        public string GalleryUseVariant { get; set; } = "detailed";
 
-        public string VibratorMode { get; set; } = "Speed";
 
         public bool useJoystick { get; set; } = true;
-
-        //Filler            
-        public int FillerMinSpeed { get; set; } = 60;
-        public int FillerMaxSpeed { get; set; } = 250;
-        public int FillerMinLength { get; set; } = 70;
-        public int FillerMaxLength { get; set; } = 90;
-
-        public int MinDamage { get; set; } = 15;
-        public int CriticalDamage { get; set; } = 70;
-        public int ExtremeDamage { get; set; } = 90;
-        public int CriticalSpeed { get; set; } = 190;
-
-        public int Delay { get; set; } = 900;
 
         //Attack
         public int AttackSpeed { get; set; } = 350;

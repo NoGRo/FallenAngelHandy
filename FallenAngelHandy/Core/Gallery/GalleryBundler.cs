@@ -10,7 +10,7 @@ namespace FallenAngelHandy.Core
     public class GalleryBundler
     {
 
-        public Dictionary<string, GalleryIndex> Galleries => GalleryRepository.Galleries;
+        public List<GalleryIndex> Galleries =  new List<GalleryIndex>();
 
         private List<CmdLinear> cmds;
         public List<CmdLinear> Cmds { get => cmds; private set => cmds = value; }
@@ -41,13 +41,13 @@ namespace FallenAngelHandy.Core
 
             //6 seconds repear in script bundle for loop msg delay
             if (gallery.Repeats)
-                sb.addCommands(gallery.Commands.Clone().TrimGalleryTimeTo(6));
+                sb.addCommands(gallery.Commands.Clone().TrimGalleryTimeTo(6000));
 
             if (Index.HasSpacer) // extra, no movement
                 sb.AddCommandMillis(spacerDuration, sb.lastValue);
 
-            if(!Galleries.ContainsKey(Index.Name))
-                Galleries.Add(Index.Name, Index);
+
+            Galleries.Add(Index);
 
         }
 
@@ -71,7 +71,7 @@ namespace FallenAngelHandy.Core
             csv.Save(csvPath);
             final.Add("csv", new FileInfo(csvPath));
 
-            Galleries.Values.ToList().ForEach(x => x.Assets = final);
+            Galleries.ForEach(x => x.Assets = final);
 
             return final;
 

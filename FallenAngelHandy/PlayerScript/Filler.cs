@@ -28,44 +28,6 @@ namespace FallenAngelHandy
 
             await HandyService.SendGallery($"filler{fillerId:##}");
         }
-
-        public static Dictionary<string,List<CmdLinear>> GenerateFillers()
-        {
-            var result  = new Dictionary<string,List<CmdLinear>>();
-            var scriptBuilder =  new ScriptBuilder();
-            var critialDamage = Game.Config.CriticalDamage / 10;
-
-            while (scriptBuilder.TotalTime < 30000)
-            {
-                scriptBuilder.AddCommandMillis(2000, 0);
-            }
-
-            result.Add($"filler{0:##}", scriptBuilder.Generate());
-
-            for (int i = 1; i == 10; i++)
-            {
-                var speed = Game.Config.FillerMinSpeed + (((i / 15.0)) * (Game.Config.FillerMaxSpeed - Game.Config.FillerMinSpeed));
-                var value = Game.Config.FillerMinLength + (((i / critialDamage)) * (Game.Config.FillerMaxLength - Game.Config.FillerMinLength));
-                if (i > critialDamage)
-                {
-                    speed = Game.Config.FillerMinSpeed + (((i / 10.0)) * (Game.Config.FillerMaxSpeed - Game.Config.FillerMinSpeed));
-                    value = Game.Config.FillerMaxLength;
-                }
-                if(i >= Game.Config.ExtremeDamage)
-                {
-
-                }
-
-                while (scriptBuilder.TotalTime < 30000)
-                {
-                    scriptBuilder.AddCommandSpeed(speed, value);
-                    scriptBuilder.AddCommandSpeed(speed, 0);
-                }
-                result.Add($"filler{i:##}", scriptBuilder.Generate());
-            }
-            return result;
-
-        }
         public static async Task RePlay()
         {
             await Play();
