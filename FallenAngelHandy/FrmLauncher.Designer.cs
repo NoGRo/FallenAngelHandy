@@ -41,6 +41,8 @@ namespace FallenAngelHandy
             this.txtLog = new System.Windows.Forms.RichTextBox();
             this.btnGenerateGallery = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.btnRestore = new System.Windows.Forms.Button();
+            this.btnUnlock = new System.Windows.Forms.Button();
             this.label4 = new System.Windows.Forms.Label();
             this.optInputJoystick = new System.Windows.Forms.RadioButton();
             this.optInputKeyboard = new System.Windows.Forms.RadioButton();
@@ -85,7 +87,7 @@ namespace FallenAngelHandy
             this.groupBox3.Controls.Add(this.chkFiller);
             this.groupBox3.Controls.Add(this.chkSexScenes);
             this.groupBox3.Controls.Add(this.chkAttack);
-            this.groupBox3.Location = new System.Drawing.Point(14, 305);
+            this.groupBox3.Location = new System.Drawing.Point(14, 355);
             this.groupBox3.Margin = new System.Windows.Forms.Padding(2);
             this.groupBox3.Name = "groupBox3";
             this.groupBox3.Padding = new System.Windows.Forms.Padding(2);
@@ -145,12 +147,11 @@ namespace FallenAngelHandy
             this.label1.Size = new System.Drawing.Size(128, 25);
             this.label1.TabIndex = 12;
             this.label1.Text = "Gallery Variant:";
-            this.label1.Click += new System.EventHandler(this.label1_Click);
             // 
             // btnLaunch
             // 
             this.btnLaunch.Enabled = false;
-            this.btnLaunch.Location = new System.Drawing.Point(653, 354);
+            this.btnLaunch.Location = new System.Drawing.Point(656, 323);
             this.btnLaunch.Margin = new System.Windows.Forms.Padding(2);
             this.btnLaunch.Name = "btnLaunch";
             this.btnLaunch.Size = new System.Drawing.Size(111, 32);
@@ -171,17 +172,15 @@ namespace FallenAngelHandy
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.pictureBox1.TabIndex = 13;
             this.pictureBox1.TabStop = false;
-            this.pictureBox1.Click += new System.EventHandler(this.pictureBox1_Click);
             // 
             // txtLog
             // 
-            this.txtLog.Location = new System.Drawing.Point(9, 440);
+            this.txtLog.Location = new System.Drawing.Point(9, 528);
             this.txtLog.Margin = new System.Windows.Forms.Padding(2);
             this.txtLog.Name = "txtLog";
-            this.txtLog.Size = new System.Drawing.Size(819, 332);
+            this.txtLog.Size = new System.Drawing.Size(819, 306);
             this.txtLog.TabIndex = 14;
             this.txtLog.Text = "";
-            this.txtLog.TextChanged += new System.EventHandler(this.txtLog_TextChanged);
             this.txtLog.DoubleClick += new System.EventHandler(this.txtLog_DoubleClick);
             // 
             // btnGenerateGallery
@@ -193,10 +192,13 @@ namespace FallenAngelHandy
             this.btnGenerateGallery.TabIndex = 15;
             this.btnGenerateGallery.Text = "Export Gallery";
             this.btnGenerateGallery.UseVisualStyleBackColor = true;
+            this.btnGenerateGallery.Visible = false;
             this.btnGenerateGallery.Click += new System.EventHandler(this.btnGenerateGallery_Click);
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.btnRestore);
+            this.groupBox1.Controls.Add(this.btnUnlock);
             this.groupBox1.Controls.Add(this.label4);
             this.groupBox1.Controls.Add(this.optInputJoystick);
             this.groupBox1.Controls.Add(this.optInputKeyboard);
@@ -209,11 +211,30 @@ namespace FallenAngelHandy
             this.groupBox1.Margin = new System.Windows.Forms.Padding(2);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Padding = new System.Windows.Forms.Padding(2);
-            this.groupBox1.Size = new System.Drawing.Size(568, 173);
+            this.groupBox1.Size = new System.Drawing.Size(568, 227);
             this.groupBox1.TabIndex = 12;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Mods";
-            this.groupBox1.Enter += new System.EventHandler(this.groupBox1_Enter);
+            // 
+            // btnRestore
+            // 
+            this.btnRestore.Location = new System.Drawing.Point(186, 181);
+            this.btnRestore.Name = "btnRestore";
+            this.btnRestore.Size = new System.Drawing.Size(113, 34);
+            this.btnRestore.TabIndex = 20;
+            this.btnRestore.Text = "Restore";
+            this.btnRestore.UseVisualStyleBackColor = true;
+            this.btnRestore.Click += new System.EventHandler(this.btnRestore_Click);
+            // 
+            // btnUnlock
+            // 
+            this.btnUnlock.Location = new System.Drawing.Point(7, 181);
+            this.btnUnlock.Name = "btnUnlock";
+            this.btnUnlock.Size = new System.Drawing.Size(173, 34);
+            this.btnUnlock.TabIndex = 19;
+            this.btnUnlock.Text = "Unlock Full Game";
+            this.btnUnlock.UseVisualStyleBackColor = true;
+            this.btnUnlock.Click += new System.EventHandler(this.btnUnlock_Click);
             // 
             // label4
             // 
@@ -263,8 +284,6 @@ namespace FallenAngelHandy
             // chkInvincibility
             // 
             this.chkInvincibility.AutoSize = true;
-            this.chkInvincibility.Checked = true;
-            this.chkInvincibility.CheckState = System.Windows.Forms.CheckState.Checked;
             this.chkInvincibility.Location = new System.Drawing.Point(8, 69);
             this.chkInvincibility.Margin = new System.Windows.Forms.Padding(2);
             this.chkInvincibility.Name = "chkInvincibility";
@@ -337,7 +356,6 @@ namespace FallenAngelHandy
             this.label3.Size = new System.Drawing.Size(97, 25);
             this.label3.TabIndex = 13;
             this.label3.Text = "Handy Key";
-            this.label3.Click += new System.EventHandler(this.label3_Click);
             // 
             // Buttplug
             // 
@@ -397,7 +415,7 @@ namespace FallenAngelHandy
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 25F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(773, 395);
+            this.ClientSize = new System.Drawing.Size(771, 444);
             this.Controls.Add(this.DeviceSelector);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.txtLog);
@@ -451,6 +469,8 @@ namespace FallenAngelHandy
         private System.Windows.Forms.RadioButton optInputKeyboard;
         private System.Windows.Forms.RadioButton optInputJoystick;
         private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Button btnUnlock;
+        private System.Windows.Forms.Button btnRestore;
     }
 }
 

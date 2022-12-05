@@ -24,8 +24,8 @@ namespace FallenAngelHandy
 
         public string GalleryUseVariant { get; set; } = "detailed";
 
-
         public bool useJoystick { get; set; } = true;
+        public bool UnlockFull { get; set; } = false;
 
         //Attack
         public int AttackSpeed { get; set; } = 350;
@@ -60,62 +60,68 @@ namespace FallenAngelHandy
 
             }
         }
-        public static void Save() 
+        public static void Save(bool updateControls = false) 
         {
             var pathConfig = userDataPath + "LauncherConfig.json";
             File.WriteAllText(pathConfig, JsonSerializer.Serialize(Game.Config,new JsonSerializerOptions { WriteIndented = true}));
-                
-            var pathMar = userDataPath + "controls.mar";
-            if (!File.Exists(pathMar))
+
+            if (updateControls)
             {
-                if (!File.Exists("controls.mar"))
-                    return;
+                var pathMar = userDataPath + "controls.mar";
+                if (!File.Exists(pathMar))
+                {
+                    if (!File.Exists("controls.mar"))
+                        return;
 
-                File.Copy("controls.mar", pathMar,true);
+                    File.Copy("controls.mar", pathMar,true);
+                }
+
+
+                string json = File.ReadAllText(pathMar);
+                if(json.Substring(json.Length - 1, 1) == "\0")
+                    json = json.Substring(0,json.Length - 1);
+                var MarFile = JsonSerializer.Deserialize<ControlsConfig>(json);
+
+           
+                var controls = MarFile.Root[0];
+
+                controls.invincibility = Game.Config.Invincibility ? 1.0 : 0.0;
+                controls.force_fucking = Game.Config.ForceFucking ? 1.0 : 0.0;
+                controls.zoomdefault =  Game.Config.ForceFucking ? "Far (automatic)" :controls.zoomdefault;
+                if (updateControls)
+                {
+                    if (Game.Config.useJoystick)
+                    {
+                        controls.control_zoomminus = 189;
+                        controls.control_zoomplus = 187;
+                        controls.control_pause = 27;
+                        controls.control_attack = 88;
+                        controls.control_interact = 66;
+                        controls.control_jump = 65;
+                        controls.control_run = 84;
+                        controls.control_left = 37;
+                        controls.control_right = 39;
+                        controls.control_up = 38;
+                        controls.control_down = 40;
+                    }
+                    else
+                    {
+                        controls.control_zoomplus = 107;
+                        controls.control_left = 37;
+                        controls.control_attack = 83;
+                        controls.control_pause = 27;
+                        controls.control_interact = 68;
+                        controls.control_jump = 32;
+                        controls.control_run = 65;
+                        controls.control_down = 40;
+                        controls.control_zoomminus = 109;
+                        controls.control_zoomreset = 106;
+                        controls.control_right = 39;
+                        controls.control_up = 38;
+                    }
+                }
+                File.WriteAllText(pathMar, JsonSerializer.Serialize(MarFile));
             }
-
-
-            string json = File.ReadAllText(pathMar);
-            if(json.Substring(json.Length - 1, 1) == "\0")
-                json = json.Substring(0,json.Length - 1);
-            var MarFile = JsonSerializer.Deserialize<ControlsConfig>(json);
-
-            var controls = MarFile.Root[0];
-
-            controls.invincibility = Game.Config.Invincibility ? 1.0 : 0.0;
-            controls.force_fucking = Game.Config.ForceFucking ? 1.0 : 0.0;
-            controls.zoomdefault =  Game.Config.ForceFucking ? "Far (automatic)" :controls.zoomdefault;
-            if (Game.Config.useJoystick)
-            {
-                controls.control_zoomminus = 189;
-                controls.control_zoomplus =  187;
-                controls.control_pause =  27;
-                controls.control_attack =  88;
-                controls.control_interact =  66;
-                controls.control_jump =  65;
-                controls.control_run =  84;
-                controls.control_left = 37;
-                controls.control_right = 39;
-                controls.control_up = 38;
-                controls.control_down = 40;
-            }
-            else 
-            {
-                controls.control_zoomplus = 107;
-                controls.control_left = 37;
-                controls.control_attack = 83;
-                controls.control_pause = 27;
-                controls.control_interact = 68;
-                controls.control_jump = 32;
-                controls.control_run = 65;
-                controls.control_down = 40;
-                controls.control_zoomminus = 109;
-                controls.control_zoomreset = 106;
-                controls.control_right = 39;
-                controls.control_up = 38;
-            }
-
-            File.WriteAllText(pathMar, JsonSerializer.Serialize(MarFile));
         }
     }
 }

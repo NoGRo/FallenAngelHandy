@@ -52,7 +52,6 @@ namespace FallenAngelHandy
 
             ButtplugService.StatusChange += ButtplugService_StatusChange;
             HandyService.StatusChange += HandyService_StatusChange;
-            Player.StatusChange += Player_StatusChange;
             Player.Init();
             loadForm();
         }
@@ -70,7 +69,9 @@ namespace FallenAngelHandy
             optInputKeyboard.Checked = !Game.Config.useJoystick;
             cmbScripts.Text = Game.Config.GalleryUseVariant;
             txtHandyKey.Text = Game.Config.HandyKey;
-            
+            btnRestore.Enabled = Game.Config.UnlockFull;
+            btnUnlock.Enabled = !Game.Config.UnlockFull;
+
         }
         private void GameListener_GameEventArrive(object sender, string e)
         {
@@ -102,11 +103,6 @@ namespace FallenAngelHandy
                 if (HandyService.isReady && e.Contains("Uploading"))
                     DeviceSelector.SelectedTab = DeviceSelector.TabPages[0];
             }));
-        }
-
-        private void Player_StatusChange(object sender, string e)
-        {
-
         }
 
         private void btnSimulate_Click(object sender, EventArgs e)
@@ -293,30 +289,6 @@ namespace FallenAngelHandy
             Game.Config.ForceFucking = chkForceFucking.Checked;
             Config.Save();
         }
-        private void txtLog_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void label1_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void label2_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void groupBox1_Enter(object sender, EventArgs e)
-        {
-
-        }
-
-        private void label3_Click(object sender, EventArgs e)
-        {
-
-        }
 
         private void btnHandyConnect_Click(object sender, EventArgs e)
         {
@@ -331,12 +303,30 @@ namespace FallenAngelHandy
         private void radioButton1_CheckedChanged(object sender, EventArgs e)
         {
             Game.Config.useJoystick = optInputJoystick.Checked;
+            Config.Save(true);
+        }
+
+
+        private void btnRestore_Click(object sender, EventArgs e)
+        {
+            if (File.Exists(@"{Game.Config.UserDataPath}\save.mar"))
+                File.Copy($@"{Game.Config.UserDataPath}\Backup_save.mar", $@"{Game.Config.UserDataPath}\save.mar");
+            
+            Game.Config.UnlockFull = false;
             Config.Save();
         }
 
-        private void pictureBox1_Click(object sender, EventArgs e)
+        private void btnUnlock_Click(object sender, EventArgs e)
         {
+            if(File.Exists(@$"{Game.Config.UserDataPath}\save.mar"))
+                File.Copy($@"{Game.Config.UserDataPath}\save.mar", $@"{Game.Config.UserDataPath}\Backup_save.mar");
 
+            if (File.Exists(@".\save.mar"))
+                File.Copy(@".\save.mar", $@"{Game.Config.UserDataPath}\save.mar");
+
+            Game.Config.UnlockFull = true;
+            Config.Save();
         }
+
     }
 }
