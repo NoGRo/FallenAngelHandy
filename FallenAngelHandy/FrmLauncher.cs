@@ -83,8 +83,13 @@ namespace FallenAngelHandy
             {
                 lblStatus.Text = $"Status: {e}";
                 btnLaunch.Enabled = ButtplugService.isReady;
-                if (ButtplugService.isReady && e.Contains("Device Found"))
+                if ((e.Contains("Device Found") && ButtplugService.isReady)
+                 || (e.Contains("Scanning For Devices") && txtHandyKey.Text == ""))
+                {
                     DeviceSelector.SelectedTab = DeviceSelector.TabPages[1];
+                }
+                
+
             }));
         }
 
@@ -327,6 +332,11 @@ namespace FallenAngelHandy
         {
             Game.Config.useJoystick = optInputJoystick.Checked;
             Config.Save();
+        }
+
+        private void pictureBox1_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

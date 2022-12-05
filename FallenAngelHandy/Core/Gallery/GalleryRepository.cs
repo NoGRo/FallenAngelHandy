@@ -123,12 +123,16 @@ namespace FallenAngelHandy.Core
                         .Where(x => x.at > galleryDefinition.StartTime
                                  && x.at <= galleryDefinition.EndTime);
 
+                    if(!actions.Any())  
+                        continue; 
+
                     var sb = new ScriptBuilder();
 
                     foreach (var action in actions)
                     {
-
-                        sb.AddCommandMillis(Convert.ToInt32(action.at - galleryDefinition.StartTime - sb.TotalTime), action.pos);
+                        sb.AddCommandMillis(
+                            millis: Convert.ToInt32(action.at - galleryDefinition.StartTime - sb.TotalTime),
+                            value: action.pos);
                     }
 
                     var gallery = new GalleryIndex

@@ -21,10 +21,8 @@ namespace FallenAngelHandy.Core
         public void Add(GalleryIndex gallery, bool repeats, bool hasSpacer)
         {
 
-
             gallery.Repeats = repeats;
             gallery.HasSpacer = hasSpacer;
-
 
             var Index = gallery;
 
@@ -46,9 +44,7 @@ namespace FallenAngelHandy.Core
             if (Index.HasSpacer) // extra, no movement
                 sb.AddCommandMillis(spacerDuration, sb.lastValue);
 
-
             Galleries.Add(Index);
-
         }
 
 

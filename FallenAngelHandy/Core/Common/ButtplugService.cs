@@ -24,8 +24,6 @@ namespace FallenAngelHandy
 
         #region Device And Connection
 
-
-
         public static async Task init()
         {
             timerReconnect.Elapsed += timerReconnectevent;
@@ -68,15 +66,19 @@ namespace FallenAngelHandy
             try {
             
                 await client.ConnectAsync(new ButtplugWebsocketConnectorOptions(new Uri(Game.Config.ButtplugUrl)));
+                if (client.Connected)
+                    OnStatusChange("Connected Intiface");
             }
             catch (ButtplugConnectorException ex)
             {
-                OnStatusChange("Can't Connect");
-                return;
+                OnStatusChange("Can't Connect Intiface");
+                await Task.Delay(TimeSpan.FromMilliseconds(3000));
+                await client.ConnectAsync(new ButtplugEmbeddedConnectorOptions());
+                if (client.Connected)
+                    OnStatusChange("Connected Local");
             }
 
-            if (client.Connected)
-                OnStatusChange("Connected");
+            
 
             foreach (var buttplugClientDevice in client.Devices)
             {
@@ -313,8 +315,14 @@ namespace FallenAngelHandy
                 vibCommandTimer.Stop();
                 return;
             }
-
-            await device.SendVibrateCmd(Speed);
+            try
+            {
+                await device.SendVibrateCmd(Speed);
+            }
+            catch (ButtplugDeviceException)
+            {
+                RemoveDevice(device);
+            }
             //Debug.WriteLine("vibro: " + Speed);
         }
         private static async Task Seek()
