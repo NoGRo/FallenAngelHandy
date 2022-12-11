@@ -165,7 +165,7 @@ namespace FallenAngelHandy.Core
 
             var variants = Galleries.GetValueOrDefault(name);
 
-            if (variant is null)
+            if (variants is null)
                 return null;
 
             var gallery = variants.FirstOrDefault(x => x.Variant == variant)
