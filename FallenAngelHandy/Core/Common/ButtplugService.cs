@@ -204,8 +204,9 @@ namespace FallenAngelHandy
             if (!queue.Any())
                 return;
 
-            await SendCmd(queue.First());
-            queue.RemoveAt(0);
+                var cmd = queue.First();
+                queue.RemoveAt(0);
+                await SendCmd(cmd);
         }
 
         public static async Task Pause() 
@@ -236,7 +237,9 @@ namespace FallenAngelHandy
         public static async Task SendCmd(List<CmdLinear> cmds)
         {
             SyncSend = DateTime.Now;
-            queue = cmds.ToList();
+
+            queue.Clear();
+            queue.AddRange(cmds);
             queue.AddAbsoluteTime();
 
             await Resume();
@@ -250,7 +253,6 @@ namespace FallenAngelHandy
                 LastCommandSent.Millis -= passes.Milliseconds;
                 cmds.Add(LastCommandSent);
             }
-
 
             queue.InsertRange(0, cmds);
 
