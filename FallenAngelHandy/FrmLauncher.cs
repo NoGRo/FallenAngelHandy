@@ -310,22 +310,26 @@ namespace FallenAngelHandy
         private void btnRestore_Click(object sender, EventArgs e)
         {
             if (File.Exists(@"{Game.Config.UserDataPath}\save.mar"))
-                File.Copy($@"{Game.Config.UserDataPath}\Backup_save.mar", $@"{Game.Config.UserDataPath}\save.mar");
+                File.Copy($@"{Game.Config.UserDataPath}\Backup_save.mar", $@"{Game.Config.UserDataPath}\save.mar", true);
             
             Game.Config.UnlockFull = false;
             Config.Save();
+            loadForm();
         }
 
         private void btnUnlock_Click(object sender, EventArgs e)
         {
             if(File.Exists(@$"{Game.Config.UserDataPath}\save.mar"))
-                File.Copy($@"{Game.Config.UserDataPath}\save.mar", $@"{Game.Config.UserDataPath}\Backup_save.mar");
+                File.Copy($@"{Game.Config.UserDataPath}\save.mar", $@"{Game.Config.UserDataPath}\Backup_save.mar",true);
 
             if (File.Exists(@".\save.mar"))
-                File.Copy(@".\save.mar", $@"{Game.Config.UserDataPath}\save.mar");
+            {
+                File.Copy(@".\save.mar", $@"{Game.Config.UserDataPath}\save.mar", true);
+            }
 
             Game.Config.UnlockFull = true;
             Config.Save();
+            loadForm();
         }
 
     }
