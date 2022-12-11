@@ -15,7 +15,7 @@ namespace FallenAngelHandy
         {
             if (!Game.Config.Filler)
             {
-                await HandyService.SendGallery($"filler{0:##}");
+                await HandyService.SendGallery($"filler0");
                 return;
             }
 
