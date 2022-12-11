@@ -62,6 +62,9 @@ namespace FallenAngelHandy
         }
         public static void Save(bool updateControls = false) 
         {
+            if(!Directory.Exists(userDataPath))
+                Directory.CreateDirectory(userDataPath);
+
             var pathConfig = userDataPath + "LauncherConfig.json";
             File.WriteAllText(pathConfig, JsonSerializer.Serialize(Game.Config,new JsonSerializerOptions { WriteIndented = true}));
 
