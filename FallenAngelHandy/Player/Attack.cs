@@ -72,13 +72,13 @@ namespace FallenAngelHandy
 
         private static async Task HitPain()
         {
-            SB.AddCommandSpeed(Game.Config.HitSpeed, Convert.ToInt32(hp * 1.5));
+            SB.AddCommandSpeed(Game.Config.HitSpeed, Math.Min(Convert.ToInt32(hp * 1.5),100));
             SB.AddCommandSpeed(Game.Config.HitSpeed, 0);
             await ButtplugService.SendCmd(SB.Generate());
         }
         private static async Task HitPleasure()
         {
-            SB.AddCommandSpeed(Game.Config.HitSpeed, 100 - Convert.ToInt32(hp * 1.5));
+            SB.AddCommandSpeed(Game.Config.HitSpeed, Math.Max(100 - Convert.ToInt32(hp * 1.5) , 0));
             SB.AddCommandSpeed(Game.Config.HitSpeed, 100);
             await ButtplugService.SendCmd(SB.Generate());
         }
