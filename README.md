@@ -5,7 +5,7 @@ is a platform game, where you go through a dungeon and fight with enemies, when 
 The game has more than 150 sex scenes, 37 min of funscript unique content, 7 levels, 9 bosses, a fun and challenging progression.
 
 ## How to play
-2. Download the modified version of the game [DOWNLOAD GAME](https://mega.nz/file/ecdDEB4C#rSsnaY7_jS6rhonCE2B53SP83HGCAlHI_MQP8cI2uhw)
+1. Download the modified version of the game [DOWNLOAD GAME](https://mega.nz/file/ecdDEB4C#rSsnaY7_jS6rhonCE2B53SP83HGCAlHI_MQP8cI2uhw)
 2. Unpack the zip
 3. Open **Fallen Angel Handy**.exe
 4. Put your device in Bluetooth mode or put your handy key
